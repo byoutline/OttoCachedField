@@ -4,6 +4,7 @@ import com.byoutline.cachedfield.CachedFieldImpl;
 import com.byoutline.eventcallback.ResponseEvent;
 import com.byoutline.ottocachedfield.internal.OttoErrorListener;
 import com.byoutline.ottocachedfield.internal.OttoSuccessListener;
+import com.byoutline.ottocachedfield.internal.RetofitValueProvider;
 import com.squareup.otto.Bus;
 import javax.inject.Provider;
 
@@ -13,18 +14,27 @@ import javax.inject.Provider;
  */
 public class OttoCachedField<T> extends CachedFieldImpl<T> {
 
-    public static Provider<String> sessionProvider;
-    public static Bus bus;
+    public static Provider<String> defaultSessionIdProvider;
+    public static Bus defaultBus;
+    public static long MAX_WAIT_TIME_IN_S = 300;
 
-    public OttoCachedField(Provider<T> valueGetter, ResponseEvent<T> successEvent) {
+    public OttoCachedField(RetrofitCall<T> valueGetter, ResponseEvent<T> successEvent) {
         this(valueGetter, successEvent, null);
     }
 
-    public OttoCachedField(Provider<T> valueGetter, ResponseEvent<T> successEvent, Object errorEvent) {
-        this(sessionProvider, valueGetter, successEvent, errorEvent, bus);
+    public OttoCachedField(RetrofitCall<T> valueGetter, ResponseEvent<T> successEvent, Object errorEvent) {
+        this(defaultSessionIdProvider, valueGetter, successEvent, errorEvent, defaultBus);
     }
 
-    public OttoCachedField(Provider<String> sessionProvider, Provider<T> valueGetter, ResponseEvent<T> successEvent, Object errorEvent, Bus bus) {
-        super(sessionProvider, valueGetter, new OttoSuccessListener<T>(bus, successEvent), new OttoErrorListener(bus, errorEvent));
+    public OttoCachedField(Provider<String> sessionIdProvider, RetrofitCall<T> valueGetter, ResponseEvent<T> successEvent, Object errorEvent, Bus bus) {
+        super(sessionIdProvider,
+                new RetofitValueProvider(valueGetter, bus, sessionIdProvider),
+                new OttoSuccessListener<T>(bus, successEvent),
+                new OttoErrorListener(bus, errorEvent));
+    }
+
+    public static void init(Provider<String> defaultSessionIdProvider, Bus defaultBus) {
+        OttoCachedField.defaultSessionIdProvider = defaultSessionIdProvider;
+        OttoCachedField.defaultBus = defaultBus;
     }
 }
