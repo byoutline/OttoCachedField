@@ -2,6 +2,7 @@ package com.byoutline.ottocachedfield.internal;
 
 import com.byoutline.eventcallback.CallbackConfig;
 import com.byoutline.eventcallback.EventCallback;
+import com.byoutline.eventcallback.IBus;
 import com.byoutline.ottocachedfield.OttoCachedField;
 import com.byoutline.ottocachedfield.RetrofitCall;
 import com.byoutline.ottoeventcallback.OttoIBus;
@@ -27,9 +28,8 @@ public class RetofitValueProvider<T> implements Provider<T> {
     private T currentResult;
     private RetrofitError currentError;
 
-    public RetofitValueProvider(RetrofitCall<T> call, Bus bus, Provider<String> sessionIdProvider) {
+    public RetofitValueProvider(RetrofitCall<T> call, IBus bus, Provider<String> sessionIdProvider) {
         this.call = call;
-        bus.register(this);
         config = getCallbackConfig(bus, sessionIdProvider);
     }
 
@@ -50,14 +50,14 @@ public class RetofitValueProvider<T> implements Provider<T> {
     }
 
     @Subscribe
-    synchronized void onSuccess(SuccessEvent<T> successEvent) {
+    public synchronized void onSuccess(SuccessEvent<T> successEvent) {
         currentResult = successEvent.getResponse();
         currentError = null;
         doneSignal.countDown();
     }
 
     @Subscribe
-    synchronized void onError(ErrorEvent errorEvent) {
+    public synchronized void onError(ErrorEvent errorEvent) {
         currentResult = null;
         currentError = errorEvent.getResponse();
         doneSignal.countDown();
@@ -71,7 +71,7 @@ public class RetofitValueProvider<T> implements Provider<T> {
                 .build();
     }
 
-    private CallbackConfig getCallbackConfig(Bus bus, Provider<String> sessionIdProvider) {
-        return new CallbackConfig(false, new OttoIBus(bus), sessionIdProvider);
+    private CallbackConfig getCallbackConfig(IBus bus, Provider<String> sessionIdProvider) {
+        return new CallbackConfig(false, bus, sessionIdProvider);
     }
 }

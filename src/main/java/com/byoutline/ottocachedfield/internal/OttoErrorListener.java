@@ -1,7 +1,7 @@
 package com.byoutline.ottocachedfield.internal;
 
 import com.byoutline.cachedfield.ErrorListener;
-import com.squareup.otto.Bus;
+import com.byoutline.eventcallback.IBus;
 
 /**
  *
@@ -9,10 +9,10 @@ import com.squareup.otto.Bus;
  */
 public class OttoErrorListener implements ErrorListener {
 
-    private final Bus bus;
+    private final IBus bus;
     private final Object event;
 
-    public OttoErrorListener(Bus bus, Object event) {
+    public OttoErrorListener(IBus bus, Object event) {
         this.bus = bus;
         this.event = event;
     }
