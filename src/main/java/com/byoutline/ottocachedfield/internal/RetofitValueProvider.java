@@ -34,7 +34,7 @@ public class RetofitValueProvider<T> implements Provider<T> {
     }
 
     @Override
-    public synchronized T get() throws RuntimeException {
+    public T get() throws RuntimeException {
         doneSignal = new CountDownLatch(1);
         EventCallback<T, RetrofitError> cb = getCallback();
         call.get(cb);
@@ -50,14 +50,14 @@ public class RetofitValueProvider<T> implements Provider<T> {
     }
 
     @Subscribe
-    public synchronized void onSuccess(SuccessEvent<T> successEvent) {
+    public void onSuccess(SuccessEvent<T> successEvent) {
         currentResult = successEvent.getResponse();
         currentError = null;
         doneSignal.countDown();
     }
 
     @Subscribe
-    public synchronized void onError(ErrorEvent errorEvent) {
+    public void onError(ErrorEvent errorEvent) {
         currentResult = null;
         currentError = errorEvent.getResponse();
         doneSignal.countDown();
