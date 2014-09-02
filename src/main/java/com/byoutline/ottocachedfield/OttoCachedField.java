@@ -20,7 +20,7 @@ public class OttoCachedField<T> extends CachedFieldImpl<T> {
 
     public static Provider<String> defaultSessionIdProvider;
     public static Bus defaultBus;
-    public static long MAX_WAIT_TIME_IN_S = 300;
+    public static long MAX_WAIT_TIME_IN_S = 60;
 
     public OttoCachedField(RetrofitCall<T> valueGetter, ResponseEvent<T> successEvent) {
         this(valueGetter, successEvent, null);
