@@ -3,7 +3,6 @@ package com.byoutline.ottocachedfield;
 import com.byoutline.cachedfield.CachedFieldImpl;
 import com.byoutline.cachedfield.ErrorListener;
 import com.byoutline.cachedfield.SuccessListener;
-import com.byoutline.eventcallback.IBus;
 import com.byoutline.eventcallback.ResponseEvent;
 import com.byoutline.ottocachedfield.internal.OttoErrorListener;
 import com.byoutline.ottocachedfield.internal.OttoSuccessListener;
