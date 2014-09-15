@@ -3,8 +3,6 @@ package com.byoutline.ottocachedfield.internal;
 import com.byoutline.cachedfield.SuccessListener;
 import com.byoutline.eventcallback.IBus;
 import com.byoutline.eventcallback.ResponseEvent;
-import com.squareup.otto.Bus;
-import com.squareup.otto.Produce;
 
 /**
  *

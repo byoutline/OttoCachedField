@@ -27,6 +27,7 @@ public class RetofitValueProvider<T> implements Provider<T> {
     private CountDownLatch doneSignal;
     private T currentResult;
     private RetrofitError currentError;
+    private long currentEventId;
 
     public RetofitValueProvider(RetrofitCall<T> call, IBus bus, Provider<String> sessionIdProvider) {
         this.call = call;
@@ -51,6 +52,9 @@ public class RetofitValueProvider<T> implements Provider<T> {
 
     @Subscribe
     public void onSuccess(SuccessEvent<T> successEvent) {
+        if(currentEventId != successEvent.getEventId()) {
+            return;
+        }
         currentResult = successEvent.getResponse();
         currentError = null;
         doneSignal.countDown();
@@ -58,16 +62,19 @@ public class RetofitValueProvider<T> implements Provider<T> {
 
     @Subscribe
     public void onError(ErrorEvent errorEvent) {
+        if(currentEventId != errorEvent.getEventId()) {
+            return;
+        }
         currentResult = null;
         currentError = errorEvent.getResponse();
         doneSignal.countDown();
     }
 
     private EventCallback<T, RetrofitError> getCallback() {
-        long id = eventsId.getAndIncrement();
+        currentEventId = eventsId.getAndIncrement();
         return CFEventCallback.<T>builder(config).
-                onSuccess().postResponseEvents(new SuccessEvent<T>(id)).validThisSessionOnly().
-                onError().postResponseEvents(new ErrorEvent(id)).validThisSessionOnly()
+                onSuccess().postResponseEvents(new SuccessEvent<T>(currentEventId)).validThisSessionOnly().
+                onError().postResponseEvents(new ErrorEvent(currentEventId)).validThisSessionOnly()
                 .build();
     }
 
