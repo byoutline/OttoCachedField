@@ -63,7 +63,7 @@ Note: It is advised to put your cached field in some sort of a manager or other 
 ```
 
 #### Interface description ####
-Each [Cached field](https://github.com/byoutline/CachedField/blob/master/src/main/java/com/byoutline/cachedfield/CachedField.java) have (at the moment) only 3 methods as their interface:
+Each [Cached field](https://github.com/byoutline/CachedField/blob/master/src/main/java/com/byoutline/cachedfield/CachedField.java) have (at the moment) only 3 methods as its interface:
 ```java
 void postValue();
 ```
