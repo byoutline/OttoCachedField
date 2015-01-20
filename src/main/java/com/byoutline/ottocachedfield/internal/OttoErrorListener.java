@@ -2,6 +2,7 @@ package com.byoutline.ottocachedfield.internal;
 
 import com.byoutline.cachedfield.ErrorListener;
 import com.byoutline.eventcallback.IBus;
+import javax.annotation.Nonnull;
 
 /**
  *
@@ -10,9 +11,9 @@ import com.byoutline.eventcallback.IBus;
 public class OttoErrorListener implements ErrorListener {
 
     private final IBus bus;
-    private final Object event;
+    private final ErrorEvent event;
 
-    public OttoErrorListener(IBus bus, Object event) {
+    public OttoErrorListener(@Nonnull IBus bus, @Nonnull ErrorEvent event) {
         this.bus = bus;
         this.event = event;
     }
@@ -20,7 +21,7 @@ public class OttoErrorListener implements ErrorListener {
     @Override
     public void valueLoadingFailed(Exception excptn) {
         if (event != null) {
-            bus.post(event);
+            event.post(bus, excptn);
         }
     }
 }
