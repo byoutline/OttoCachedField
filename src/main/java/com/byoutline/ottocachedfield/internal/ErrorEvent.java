@@ -21,11 +21,11 @@ public class ErrorEvent {
         this.genericEvent = genericEvent;
     }
 
-    public static ErrorEvent responseEvent(@Nonnull ResponseEvent<Exception> event) {
+    public static ErrorEvent responseEvent(@Nullable ResponseEvent<Exception> event) {
         return new ErrorEvent(event, null);
     }
 
-    public static ErrorEvent genericEvent(@Nonnull Object event) {
+    public static ErrorEvent genericEvent(@Nullable Object event) {
         return new ErrorEvent(null, event);
     }
 
