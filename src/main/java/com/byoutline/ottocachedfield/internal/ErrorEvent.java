@@ -1,13 +1,12 @@
 package com.byoutline.ottocachedfield.internal;
 
-import com.byoutline.eventcallback.IBus;
 import com.byoutline.eventcallback.ResponseEvent;
 import com.squareup.otto.Bus;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- *
  * @author Sebastian Kacprzak <sebastian.kacprzak at byoutline.com>
  */
 public class ErrorEvent {
@@ -16,7 +15,7 @@ public class ErrorEvent {
     private final Object genericEvent;
 
     public ErrorEvent(@Nullable ResponseEvent<Exception> responseEvent,
-            @Nullable Object genericEvent) {
+                      @Nullable Object genericEvent) {
         this.responseEvent = responseEvent;
         this.genericEvent = genericEvent;
     }
@@ -29,7 +28,7 @@ public class ErrorEvent {
         return new ErrorEvent(null, event);
     }
 
-    public void post(@Nonnull IBus bus, Exception ex) {
+    public void post(@Nonnull Bus bus, Exception ex) {
         if (responseEvent != null) {
             responseEvent.setResponse(ex);
             bus.post(responseEvent);
