@@ -5,7 +5,6 @@ import com.byoutline.cachedfield.CachedFieldImpl;
 import com.byoutline.cachedfield.ErrorListener;
 import com.byoutline.cachedfield.FieldStateListener;
 import com.byoutline.cachedfield.SuccessListener;
-import com.byoutline.cachedfield.internal.StubFieldStateListener;
 import com.byoutline.eventcallback.ResponseEvent;
 import com.byoutline.ottocachedfield.internal.ErrorEvent;
 import com.byoutline.ottocachedfield.internal.OttoErrorListener;
@@ -37,36 +36,26 @@ public class OttoCachedField<T> extends CachedFieldImpl<T> {
         this(defaultSessionIdProvider, valueGetter, successEvent, errorEvent, defaultBus);
     }
 
-    public OttoCachedField(Provider<String> sessionIdProvider, Provider<T> valueGetter, ResponseEvent<T> successEvent, ResponseEvent<Exception> errorEvent, Bus bus) {
-        this(sessionIdProvider, valueGetter, successEvent, ErrorEvent.responseEvent(errorEvent), new StubFieldStateListener(), bus);
+    public OttoCachedField(Provider<String> sessionIdProvider, Provider<T> valueGetter, ResponseEvent<T> successEvent, ResponseEvent<Exception> errorEvent, FieldStateListener fieldStateListener, Bus bus) {
+        this(sessionIdProvider, valueGetter, successEvent, ErrorEvent.responseEvent(errorEvent), bus);
     }
 
     public OttoCachedField(Provider<String> sessionIdProvider, Provider<T> valueGetter, ResponseEvent<T> successEvent, Object errorEvent, Bus bus) {
-        this(sessionIdProvider, valueGetter, successEvent, ErrorEvent.genericEvent(errorEvent), new StubFieldStateListener(), bus);
+        this(sessionIdProvider, valueGetter, successEvent, ErrorEvent.genericEvent(errorEvent), bus);
     }
 
-    public OttoCachedField(Provider<String> sessionIdProvider, Provider<T> valueGetter, ResponseEvent<T> successEvent, ResponseEvent<Exception> errorEvent, FieldStateListener fieldStateListener, Bus bus) {
-        this(sessionIdProvider, valueGetter, successEvent, ErrorEvent.responseEvent(errorEvent), fieldStateListener, bus);
-    }
-
-    public OttoCachedField(Provider<String> sessionIdProvider, Provider<T> valueGetter, ResponseEvent<T> successEvent, Object errorEvent, FieldStateListener fieldStateListener, Bus bus) {
-        this(sessionIdProvider, valueGetter, successEvent, ErrorEvent.genericEvent(errorEvent), fieldStateListener, bus);
-    }
-
-    OttoCachedField(Provider<String> sessionIdProvider, Provider<T> valueGetter, ResponseEvent<T> successEvent, ErrorEvent errorEvent, FieldStateListener fieldStateListener, Bus bus) {
+    OttoCachedField(Provider<String> sessionIdProvider, Provider<T> valueGetter, ResponseEvent<T> successEvent, ErrorEvent errorEvent, Bus bus) {
         this(sessionIdProvider,
                 valueGetter,
                 new OttoSuccessListener<>(bus, successEvent),
                 new OttoErrorListener(bus, errorEvent),
-                fieldStateListener,
                 bus);
     }
 
     private OttoCachedField(Provider<String> sessionProvider,
                             Provider<T> valueGetter,
-                            SuccessListener<T> successHandler, ErrorListener errorHandler,
-                            FieldStateListener fieldStateListener, Bus bus) {
-        super(sessionProvider, valueGetter, successHandler, errorHandler, fieldStateListener);
+                            SuccessListener<T> successHandler, ErrorListener errorHandler, Bus bus) {
+        super(sessionProvider, valueGetter, successHandler, errorHandler);
         bus.register(valueGetter);
     }
 

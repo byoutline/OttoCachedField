@@ -1,7 +1,5 @@
 package com.byoutline.ottocachedfield;
 
-import com.byoutline.cachedfield.FieldStateListener;
-import com.byoutline.cachedfield.internal.StubFieldStateListener;
 import com.byoutline.eventcallback.ResponseEvent;
 import com.byoutline.ottocachedfield.internal.ErrorEvent;
 import com.squareup.otto.Bus;
@@ -20,13 +18,11 @@ public class OttoCachedFieldBuilder<T> {
     private Provider<T> valueGetter;
     private ResponseEvent<T> successEvent;
     private ErrorEvent errorEvent;
-    private FieldStateListener fieldStateListener;
     private Provider<String> sessionIdProvider;
     private Bus bus;
 
     public OttoCachedFieldBuilder() {
         bus = OttoCachedField.defaultBus;
-        fieldStateListener = new StubFieldStateListener();
         sessionIdProvider = OttoCachedField.defaultSessionIdProvider;
     }
 
@@ -51,33 +47,18 @@ public class OttoCachedFieldBuilder<T> {
         private ErrorEventSetter() {
         }
 
-        public FieldStateListenerSetter withGenericErrorEvent(Object errorEvent) {
+        public CustomSessionIdProvider withGenericErrorEvent(Object errorEvent) {
             OttoCachedFieldBuilder.this.errorEvent = ErrorEvent.genericEvent(errorEvent);
-            return new FieldStateListenerSetter();
+            return new CustomSessionIdProvider();
         }
 
-        public FieldStateListenerSetter withResponseErrorEvent(ResponseEvent<Exception> errorEvent) {
+        public CustomSessionIdProvider withResponseErrorEvent(ResponseEvent<Exception> errorEvent) {
             OttoCachedFieldBuilder.this.errorEvent = ErrorEvent.responseEvent(errorEvent);
-            return new FieldStateListenerSetter();
-        }
-
-        public OttoCachedField<T> build() {
-            OttoCachedFieldBuilder.this.errorEvent = new ErrorEvent(null, null);
-            return OttoCachedFieldBuilder.this.build();
-        }
-    }
-
-    public class FieldStateListenerSetter {
-
-        private FieldStateListenerSetter() {
-        }
-
-        public CustomSessionIdProvider withFieldStateListener(FieldStateListener fieldStateListener) {
-            OttoCachedFieldBuilder.this.fieldStateListener = fieldStateListener;
             return new CustomSessionIdProvider();
         }
 
         public OttoCachedField<T> build() {
+            OttoCachedFieldBuilder.this.errorEvent = new ErrorEvent(null, null);
             return OttoCachedFieldBuilder.this.build();
         }
     }
@@ -123,6 +104,6 @@ public class OttoCachedFieldBuilder<T> {
     }
 
     private OttoCachedField<T> build() {
-        return new OttoCachedField<>(sessionIdProvider, valueGetter, successEvent, errorEvent, fieldStateListener, bus);
+        return new OttoCachedField<>(sessionIdProvider, valueGetter, successEvent, errorEvent, bus);
     }
 }
