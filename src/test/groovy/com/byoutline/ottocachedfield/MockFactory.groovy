@@ -1,6 +1,7 @@
 package com.byoutline.ottocachedfield
 
 import com.byoutline.cachedfield.FieldState
+import com.byoutline.cachedfield.ProviderWithArg
 
 import javax.inject.Provider
 
@@ -25,6 +26,12 @@ static Provider<String> getDelayedStringGetter(String value, long sleepTime) {
 static Provider<String> getStringGetter(String value) {
     return [get     : { return value },
             toString: { "string getter: " + value }] as Provider<String>
+}
+
+static ProviderWithArg<String, Integer> getStringGetter(Map<Integer, String> argToValueMap) {
+    return [get     : { Integer arg -> return argToValueMap.get(arg) },
+            toString: { "string getter with arg: " + argToValueMap }
+    ] as ProviderWithArg<String, Integer>
 }
 
 static Provider<String> getFailingStringGetter(Exception ex) {
