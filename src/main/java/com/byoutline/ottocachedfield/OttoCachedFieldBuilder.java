@@ -77,7 +77,11 @@ public class OttoCachedFieldBuilder<T> {
             OttoCachedFieldBuilder.this.sessionIdProvider = sessionIdProvider;
             return new CustomBus();
         }
-
+        
+        public ArgsChoice withCustomBus(Bus bus) {
+            OttoCachedFieldBuilder.this.bus = bus;
+            return new ArgsChoice();
+        }
 
         public ArgsBuilder withArgs() {
             return new ArgsBuilder();
