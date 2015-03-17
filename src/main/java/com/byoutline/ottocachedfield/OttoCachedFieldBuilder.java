@@ -57,9 +57,14 @@ public class OttoCachedFieldBuilder<T> {
             return new CustomSessionIdProvider();
         }
 
-        public OttoCachedField<T> build() {
+        public ArgsBuilder withArgs() {
             OttoCachedFieldBuilder.this.errorEvent = new ErrorEvent(null, null);
-            return OttoCachedFieldBuilder.this.build();
+            return new ArgsBuilder();
+        }
+
+        public NoArgsBuilder withoutArgs() {
+            OttoCachedFieldBuilder.this.errorEvent = new ErrorEvent(null, null);
+            return new NoArgsBuilder();
         }
     }
 
@@ -73,8 +78,13 @@ public class OttoCachedFieldBuilder<T> {
             return new CustomBus();
         }
 
-        public OttoCachedField<T> build() {
-            return OttoCachedFieldBuilder.this.build();
+
+        public ArgsBuilder withArgs() {
+            return new ArgsBuilder();
+        }
+
+        public NoArgsBuilder withoutArgs() {
+            return new NoArgsBuilder();
         }
     }
 
@@ -83,27 +93,58 @@ public class OttoCachedFieldBuilder<T> {
         private CustomBus() {
         }
 
-        public Builder withCustomBus(Bus bus) {
+        public ArgsChoice withCustomBus(Bus bus) {
             OttoCachedFieldBuilder.this.bus = bus;
-            return new Builder();
+            return new ArgsChoice();
         }
 
-        public OttoCachedField<T> build() {
-            return OttoCachedFieldBuilder.this.build();
-        }
-    }
-
-    public class Builder {
-
-        private Builder() {
+        public ArgsBuilder withArgs() {
+            return new ArgsBuilder();
         }
 
-        public OttoCachedField<T> build() {
-            return OttoCachedFieldBuilder.this.build();
+        public NoArgsBuilder withoutArgs() {
+            return new NoArgsBuilder();
         }
     }
 
-    private OttoCachedField<T> build() {
+    public class ArgsChoice {
+        private ArgsChoice(){
+        }
+
+        public ArgsBuilder withArgs() {
+            return new ArgsBuilder();
+        }
+
+        public NoArgsBuilder withoutArgs() {
+            return new NoArgsBuilder();
+        }
+    }
+
+    public class NoArgsBuilder {
+
+        private NoArgsBuilder() {
+        }
+
+        public OttoCachedField<T> build() {
+            return OttoCachedFieldBuilder.this.buildNoArgs();
+        }
+    }
+
+    public class ArgsBuilder {
+        private ArgsBuilder() {
+        }
+
+        public OttoCachedField<T> build() {
+            return OttoCachedFieldBuilder.this.buildWithArgs();
+        }
+    }
+
+    private OttoCachedField<T> buildWithArgs() {
+        // TODO: writeme.
+        return null;
+    }
+
+    private OttoCachedField<T> buildNoArgs() {
         return new OttoCachedField<>(sessionIdProvider, valueGetter, successEvent, errorEvent, bus);
     }
 }
