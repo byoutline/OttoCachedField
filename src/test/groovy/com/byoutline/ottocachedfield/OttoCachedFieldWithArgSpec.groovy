@@ -12,7 +12,6 @@ class OttoCachedFieldWithArgSpec extends spock.lang.Specification {
     @Shared
     Map<Integer, String> argToValueMap = [1: 'a', 2: 'b']
     @Shared
-    Exception exception = new RuntimeException("Cached Field test exception")
     ResponseEventWithArg<String, Integer> successEvent
     ResponseEventWithArg<Exception, Integer> errorEvent
     Bus bus
