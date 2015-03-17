@@ -31,6 +31,7 @@ class OttoCachedFieldSpec extends spock.lang.Specification {
         OttoCachedField field = OttoCachedField.builder()
                 .withValueProvider(MockFactory.getDelayedStringGetter(value, 1000))
                 .withSuccessEvent(successEvent)
+                .withoutArgs()
                 .build();
 
         when:
@@ -54,6 +55,7 @@ class OttoCachedFieldSpec extends spock.lang.Specification {
                 .withValueProvider(valProv)
                 .withSuccessEvent(successEvent)
                 .withResponseErrorEvent(errorEvent)
+                .withoutArgs()
                 .build();
         field.postValue()
         sleep 3
