@@ -1,6 +1,5 @@
 package com.byoutline.ottocachedfield
 
-import com.byoutline.eventcallback.ResponseEvent
 import com.squareup.otto.Bus
 import spock.lang.Shared
 import spock.lang.Unroll
@@ -44,11 +43,32 @@ class OttoCachedFieldWithArgSpec extends spock.lang.Specification {
         0 * errorEvent.setResponse(_, _)
 
         where:
-        val | arg | sC
-        null| 0   | 1
-        'a' | 1   | 1
-        'b' | 2   | 1
-        0   | 42  | 0
+        val  | arg | sC
+        null | 0   | 1
+        'a'  | 1   | 1
+        'b'  | 2   | 1
+    }
+
+    def "postValue should post error with argument"() {
+        given:
+        Exception errorVal = null;
+        Integer errorArg = null;
+        ResponseEventWithArg<Exception, Integer> errorEvent =
+                { Exception val, Integer arg ->
+                    errorVal = val; errorArg = arg
+                } as ResponseEventWithArg<Exception, Integer>
+        OttoCachedFieldWithArg field = OttoCachedFieldWithArg.builder()
+                .withValueProvider(MockFactory.getFailingStringGetterWithArg())
+                .withSuccessEvent(successEvent)
+                .withResponseErrorEvent(errorEvent)
+                .build();
+        when:
+        field.postValue(2)
+        sleep 3
+
+        then:
+        errorVal.message == "E2"
+        errorArg == 2
     }
 
 }
