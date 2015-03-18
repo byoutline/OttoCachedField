@@ -1,5 +1,6 @@
 OttoCachedField
 ===============
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.byoutline.ottocachedfield/ottocachedfield/badge.svg?style=flat)](http://mvnrepository.com/artifact/com.byoutline.ottocachedfield/ottocachedfield) ![Travis badge](https://img.shields.io/travis/byoutline/OttoCachedField.svg)
 
 Wrapper for expensive values (like API calls) that post results by Otto bus. Additionally it guards against displaying data from one user to another.
 
@@ -8,7 +9,7 @@ How to use
 ##### Including dependency #####
 Add to your ```build.gradle```:
 ```groovy
-compile 'com.byoutline.ottocachedfield:ottocachedfield:1.3.0'
+compile 'com.byoutline.ottocachedfield:ottocachedfield:1.3.2'
 ```
 
 ##### Init commmon settings #####
@@ -32,6 +33,7 @@ public final CachedField<YourExpensiveValue> expensiveValue = new OttoCachedFiel
 public class ValueFetchedEvent extends ResponseEventImpl<YourExpensiveValue> {
 }
 ```
+
 If you skipped init common settings step or want to override default project value for this specific field you may also pass sessionIdProvider and Otto bus instance.
 
 Note: It is advised to put your cached field in some sort of a manager or other object that is not connected to Android view lifecycle. It will allow you to keep your cached values between screen rotation, etc.
@@ -62,24 +64,45 @@ Note: It is advised to put your cached field in some sort of a manager or other 
     }
 ```
 
-#### Interface description ####
-Each [Cached field](https://github.com/byoutline/CachedField/blob/master/src/main/java/com/byoutline/cachedfield/CachedField.java) have (at the moment) only 3 methods as its interface:
-```java
-void postValue();
-```
-which posts current value when it's ready - most often that happens immediately if the value was already calculated/fetched, or after time needed for it recalculation if session changed or it is first time that this value is requested.
+Calling ```postValue``` or ```refresh``` will always cause CachedField to post either Success Event or Error Event.
 
-```java
-void refresh();
-```
-that forces recalucaltion of the value (and then posts event),
+### Interface description ###
+See [Cached field](https://github.com/byoutline/CachedField#interface-description)
 
-```java
-FieldState getState();
-```
-that returns current state of the field (this is typically used to display some kind of progress indicator to user).
+### Parametric fields ###
 
-Adding extra method ```void drop();``` is currently under consideration.
+In case your value depends on some argument  (for example API GET call that requires item ID) you can use [OttoCachedFieldWithArg](https://github.com/byoutline/OttoCachedField/blob/master/src/main/java/com/byoutline/ottocachedfield/OttoCachedFieldWithArg.java) . It supports same methods but requires you to pass argument to ```post``` and ```refresh``` calls. Only one value will be cached at the time, so changing argument will force a refresh .
+
+If you ask ```OttoCachedFieldWithArg``` for value with new argument before last call had chance to finish, Success Event will be posted only about with value for current argument. Previous call will be assumed obsolete, and its return value(if any) will be discarded and Error Event will be posted instead.
+
+If you want to check which call to field was completed check ```argValue``` parameter passed to your [ResponseEventWithArg](https://github.com/byoutline/OttoCachedField/blob/master/src/main/java/com/byoutline/ottocachedfield/events/ResponseEventWithArg.java)
+
+
+Prametric field classes have ```withArg``` suffix, and behave same as their no arg counterparts. Split exist only to enforce passing extra argument to methods that depend on it.
+
+without arguments                              | with arguments
+-----------------------------------------------|-----------------------------------------------
+[OttoCachedField](https://github.com/byoutline/OttoCachedField/blob/master/src/main/java/com/byoutline/ottocachedfield/OttoCachedField.java)  | [OttoCachedFieldWithArg](https://github.com/byoutline/OttoCachedField/blob/master/src/main/java/com/byoutline/ottocachedfield/OttoCachedFieldWithArg.java)
+[OttoCachedFieldBuilder](https://github.com/byoutline/OttoCachedField/blob/master/src/main/java/com/byoutline/ottocachedfield/OttoCachedFieldBuilder.java)  | [OttoCachedFieldWithArgBuilder](https://github.com/byoutline/OttoCachedField/blob/master/src/main/java/com/byoutline/ottocachedfield/OttoCachedFieldWithArgBuilder.java)
+[ResponseEvent](https://github.com/byoutline/EventCallback/blob/master/src/main/java/com/byoutline/eventcallback/ResponseEvent.java) | [ResponseEventWithArg](https://github.com/byoutline/OttoCachedField/blob/master/src/main/java/com/byoutline/ottocachedfield/events/ResponseEventWithArg.java)
+[ResponseEventImpl](https://github.com/byoutline/EventCallback/blob/master/src/main/java/com/byoutline/eventcallback/ResponseEventImpl.java) | [ResponseEventWithArgImpl](https://github.com/byoutline/OttoCachedField/blob/master/src/main/java/com/byoutline/ottocachedfield/events/ResponseEventWithArgImpl.java)
+[Provider](https://docs.oracle.com/javaee/7/api/javax/inject/Provider.html) | [ProviderWithArg](https://github.com/byoutline/CachedField/blob/master/src/main/java/com/byoutline/cachedfield/ProviderWithArg.java)
+
+
+### Builder syntax for OttoCachedField instance creation ###
+You may choose use ```builder``` instead of constructor to create yout fields:
+```java
+new OttoCachedFieldBuilder<>()
+    .withValueProvider(new Provider<YourExpensiveValue>() {
+        @Override
+        public YourExpensiveValue get() {
+            return service.getValueFromApi();
+        }
+    }).withSuccessEvent(new ValueFetchedEvent())
+    .withResponseErrorEvent(new ValueFetchFailedEvent())
+    .build();
+```
+Builder syntax is slightly longer, but makes it obvious which argument does what, and allows for better IDE autocompletion.
 
 Example Project
 ---------------
