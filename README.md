@@ -77,7 +77,15 @@ If you ask ```OttoCachedFieldWithArg``` for value with new argument before last 
 If you want to check which call to field was completed check ```argValue``` parameter passed to your [ResponseEventWithArg](https://github.com/byoutline/OttoCachedField/blob/master/src/main/java/com/byoutline/ottocachedfield/events/ResponseEventWithArg.java)
 
 
+Prametric field classes have ```withArg``` suffix:
 
+without arguments                              | with arguments
+-----------------------------------------------|-----------------------------------------------
+[OttoCachedField](https://github.com/byoutline/OttoCachedField/blob/master/src/main/java/com/byoutline/ottocachedfield/OttoCachedField.java)  | [OttoCachedFieldWithArg](https://github.com/byoutline/OttoCachedField/blob/master/src/main/java/com/byoutline/ottocachedfield/OttoCachedFieldWithArg.java)
+[OttoCachedFieldBuilder](https://github.com/byoutline/OttoCachedField/blob/master/src/main/java/com/byoutline/ottocachedfield/OttoCachedFieldBuilder.java)  | [OttoCachedFieldWithArgBuilder](https://github.com/byoutline/OttoCachedField/blob/master/src/main/java/com/byoutline/ottocachedfield/OttoCachedFieldWithArgBuilder.java)
+[ResponseEvent](https://github.com/byoutline/EventCallback/blob/master/src/main/java/com/byoutline/eventcallback/ResponseEvent.java) | [ResponseEventWithArg](https://github.com/byoutline/OttoCachedField/blob/master/src/main/java/com/byoutline/ottocachedfield/events/ResponseEventWithArg.java)
+[ResponseEventImpl](https://github.com/byoutline/EventCallback/blob/master/src/main/java/com/byoutline/eventcallback/ResponseEventImpl.java) | [ResponseEventWithArgImpl](https://github.com/byoutline/OttoCachedField/blob/master/src/main/java/com/byoutline/ottocachedfield/events/ResponseEventWithArgImpl.java)
+[Provider](https://docs.oracle.com/javaee/7/api/javax/inject/Provider.html) | [ProviderWithArg](https://github.com/byoutline/CachedField/blob/master/src/main/java/com/byoutline/cachedfield/ProviderWithArg.java)
 
 ### Builder syntax for OttoCachedField instance creation ###
 You may choose use ```builder``` instead of constructor to create yout fields:
