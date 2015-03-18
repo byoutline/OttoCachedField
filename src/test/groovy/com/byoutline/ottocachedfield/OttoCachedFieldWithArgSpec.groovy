@@ -1,5 +1,6 @@
 package com.byoutline.ottocachedfield
 
+import com.byoutline.ottocachedfield.events.ResponseEventWithArg
 import com.squareup.otto.Bus
 import spock.lang.Shared
 import spock.lang.Unroll

@@ -1,7 +1,7 @@
 package com.byoutline.ottocachedfield.internal;
 
 import com.byoutline.cachedfield.ErrorListenerWithArg;
-import com.byoutline.ottocachedfield.ResponseEventWithArg;
+import com.byoutline.ottocachedfield.events.ResponseEventWithArg;
 import com.squareup.otto.Bus;
 
 import javax.annotation.Nonnull;

@@ -5,6 +5,7 @@ import com.byoutline.cachedfield.CachedFieldWithArgImpl;
 import com.byoutline.cachedfield.ErrorListenerWithArg;
 import com.byoutline.cachedfield.ProviderWithArg;
 import com.byoutline.cachedfield.SuccessListenerWithArg;
+import com.byoutline.ottocachedfield.events.ResponseEventWithArg;
 import com.byoutline.ottocachedfield.internal.OttoErrorListenerWithArg;
 import com.byoutline.ottocachedfield.internal.OttoSuccessListenerWithArg;
 import com.squareup.otto.Bus;
@@ -22,7 +23,7 @@ public class OttoCachedFieldWithArg<RETURN_TYPE, ARG_TYPE> extends CachedFieldWi
 
     OttoCachedFieldWithArg(Provider<String> sessionIdProvider, 
             ProviderWithArg<RETURN_TYPE, ARG_TYPE> valueGetter, 
-            ResponseEventWithArg<RETURN_TYPE, ARG_TYPE> successEvent, 
+            ResponseEventWithArg<RETURN_TYPE, ARG_TYPE> successEvent,
             ResponseEventWithArg<Exception, ARG_TYPE> errorEvent, Bus bus) {
         this(sessionIdProvider,
                 valueGetter,

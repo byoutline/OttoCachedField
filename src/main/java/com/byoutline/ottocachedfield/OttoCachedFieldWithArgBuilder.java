@@ -1,6 +1,7 @@
 package com.byoutline.ottocachedfield;
 
 import com.byoutline.cachedfield.ProviderWithArg;
+import com.byoutline.ottocachedfield.events.ResponseEventWithArg;
 import com.squareup.otto.Bus;
 
 import javax.annotation.Nullable;
