@@ -10,13 +10,13 @@ import javax.inject.Provider;
  * Fluent interface builder of {@link OttoCachedField}. If you do not like
  * fluent interface create {@link OttoCachedField} by one of its constructors.
  *
- * @param <T> Type of object to be cached.
+ * @param <RETURN_TYPE> Type of object to be cached.
  * @author Sebastian Kacprzak <sebastian.kacprzak at byoutline.com>
  */
-public class OttoCachedFieldBuilder<T> {
+public class OttoCachedFieldBuilder<RETURN_TYPE> {
 
-    private Provider<T> valueGetter;
-    private ResponseEvent<T> successEvent;
+    private Provider<RETURN_TYPE> valueGetter;
+    private ResponseEvent<RETURN_TYPE> successEvent;
     private ErrorEvent errorEvent;
     private Provider<String> sessionIdProvider;
     private Bus bus;
@@ -26,7 +26,7 @@ public class OttoCachedFieldBuilder<T> {
         sessionIdProvider = OttoCachedField.defaultSessionIdProvider;
     }
 
-    public SuccessEvent withValueProvider(Provider<T> valueProvider) {
+    public SuccessEvent withValueProvider(Provider<RETURN_TYPE> valueProvider) {
         this.valueGetter = valueProvider;
         return new SuccessEvent();
     }
@@ -36,7 +36,7 @@ public class OttoCachedFieldBuilder<T> {
         private SuccessEvent() {
         }
 
-        public ErrorEventSetter withSuccessEvent(ResponseEvent<T> successEvent) {
+        public ErrorEventSetter withSuccessEvent(ResponseEvent<RETURN_TYPE> successEvent) {
             OttoCachedFieldBuilder.this.successEvent = successEvent;
             return new ErrorEventSetter();
         }
@@ -57,7 +57,7 @@ public class OttoCachedFieldBuilder<T> {
             return new CustomSessionIdProvider();
         }
 
-        public OttoCachedField<T> build() {
+        public OttoCachedField<RETURN_TYPE> build() {
             OttoCachedFieldBuilder.this.errorEvent = new ErrorEvent(null, null);
             return OttoCachedFieldBuilder.this.build();
         }
@@ -73,7 +73,7 @@ public class OttoCachedFieldBuilder<T> {
             return new CustomBus();
         }
 
-        public OttoCachedField<T> build() {
+        public OttoCachedField<RETURN_TYPE> build() {
             return OttoCachedFieldBuilder.this.build();
         }
     }
@@ -88,7 +88,7 @@ public class OttoCachedFieldBuilder<T> {
             return new Builder();
         }
 
-        public OttoCachedField<T> build() {
+        public OttoCachedField<RETURN_TYPE> build() {
             return OttoCachedFieldBuilder.this.build();
         }
     }
@@ -98,12 +98,12 @@ public class OttoCachedFieldBuilder<T> {
         private Builder() {
         }
 
-        public OttoCachedField<T> build() {
+        public OttoCachedField<RETURN_TYPE> build() {
             return OttoCachedFieldBuilder.this.build();
         }
     }
 
-    private OttoCachedField<T> build() {
-        return new OttoCachedField<>(sessionIdProvider, valueGetter, successEvent, errorEvent, bus);
+    private OttoCachedField<RETURN_TYPE> build() {
+        return new OttoCachedField<RETURN_TYPE>(sessionIdProvider, valueGetter, successEvent, errorEvent, bus);
     }
 }
