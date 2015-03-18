@@ -8,6 +8,7 @@ import com.byoutline.cachedfield.SuccessListenerWithArg;
 import com.byoutline.ottocachedfield.internal.OttoErrorListenerWithArg;
 import com.byoutline.ottocachedfield.internal.OttoSuccessListenerWithArg;
 import com.squareup.otto.Bus;
+
 import javax.inject.Provider;
 
 /**

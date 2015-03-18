@@ -10,6 +10,7 @@ import com.byoutline.ottocachedfield.internal.ErrorEvent;
 import com.byoutline.ottocachedfield.internal.OttoErrorListener;
 import com.byoutline.ottocachedfield.internal.OttoSuccessListener;
 import com.squareup.otto.Bus;
+
 import javax.inject.Provider;
 
 /**

@@ -120,6 +120,4 @@ class OttoCachedFieldSpec extends spock.lang.Specification {
         then:
         1 * bus.post(_)
     }
-
-
 }

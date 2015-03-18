@@ -1,10 +1,9 @@
 package com.byoutline.ottocachedfield;
 
 import com.byoutline.cachedfield.ProviderWithArg;
-import com.byoutline.ottocachedfield.internal.ErrorEvent;
 import com.squareup.otto.Bus;
-import javax.annotation.Nullable;
 
+import javax.annotation.Nullable;
 import javax.inject.Provider;
 
 /**
