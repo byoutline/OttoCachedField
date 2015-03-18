@@ -74,6 +74,11 @@ In case your value depends on some argument  (for example API GET call that requ
 
 If you ask ```OttoCachedFieldWithArg``` for value with new argument before last call had chance to finish, Success Event will be posted only about with value for current argument. Previous call will be assumed obsolete, and its return value(if any) will be discarded and Error Event will be posted instead.
 
+If you want to check which call to field was completed check ```argValue``` parameter passed to your [ResponseEventWithArg](https://github.com/byoutline/OttoCachedField/blob/master/src/main/java/com/byoutline/ottocachedfield/events/ResponseEventWithArg.java)
+
+
+
+
 ### Builder syntax for OttoCachedField instance creation ###
 You may choose use ```builder``` instead of constructor to create yout fields:
 ```java
