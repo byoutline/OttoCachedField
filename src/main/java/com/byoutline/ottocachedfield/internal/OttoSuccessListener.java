@@ -7,18 +7,18 @@ import com.squareup.otto.Bus;
 /**
  * @author Sebastian Kacprzak <sebastian.kacprzak at byoutline.com>
  */
-public final class OttoSuccessListener<T> implements SuccessListener<T> {
+public final class OttoSuccessListener<RETURN_TYPE> implements SuccessListener<RETURN_TYPE> {
 
     private final Bus bus;
-    private final ResponseEvent<T> responseEvent;
+    private final ResponseEvent<RETURN_TYPE> responseEvent;
 
-    public OttoSuccessListener(Bus bus, ResponseEvent<T> responseEvent) {
+    public OttoSuccessListener(Bus bus, ResponseEvent<RETURN_TYPE> responseEvent) {
         this.bus = bus;
         this.responseEvent = responseEvent;
     }
 
     @Override
-    public void valueLoaded(T t) {
+    public void valueLoaded(RETURN_TYPE t) {
         responseEvent.setResponse(t);
         bus.post(responseEvent);
     }
