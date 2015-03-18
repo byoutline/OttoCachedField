@@ -65,10 +65,10 @@ Note: It is advised to put your cached field in some sort of a manager or other 
 
 Calling ```postValue``` or ```refresh``` will always cause CachedField to post either Success Event or Error Event.
 
-#### Interface description ####
+### Interface description ###
 See [Cached field](https://github.com/byoutline/CachedField#interface-description)
 
-#### Parametric fields ####
+### Parametric fields ###
 
 In case your value depends on some argument  (for example API GET call that requires item ID) you can use [OttoCachedFieldWithArg](https://github.com/byoutline/OttoCachedField/blob/master/src/main/java/com/byoutline/ottocachedfield/OttoCachedFieldWithArg.java) . It supports same methods but requires you to pass argument to ```post``` and ```refresh``` calls. Only one value will be cached at the time, so changing argument will force a refresh .
 
@@ -77,7 +77,7 @@ If you ask ```OttoCachedFieldWithArg``` for value with new argument before last 
 If you want to check which call to field was completed check ```argValue``` parameter passed to your [ResponseEventWithArg](https://github.com/byoutline/OttoCachedField/blob/master/src/main/java/com/byoutline/ottocachedfield/events/ResponseEventWithArg.java)
 
 
-Prametric field classes have ```withArg``` suffix:
+Prametric field classes have ```withArg``` suffix, and behave same as their no arg counterparts. Split exist only to enforce passing extra argument to methods that depend on it.
 
 without arguments                              | with arguments
 -----------------------------------------------|-----------------------------------------------
@@ -86,6 +86,7 @@ without arguments                              | with arguments
 [ResponseEvent](https://github.com/byoutline/EventCallback/blob/master/src/main/java/com/byoutline/eventcallback/ResponseEvent.java) | [ResponseEventWithArg](https://github.com/byoutline/OttoCachedField/blob/master/src/main/java/com/byoutline/ottocachedfield/events/ResponseEventWithArg.java)
 [ResponseEventImpl](https://github.com/byoutline/EventCallback/blob/master/src/main/java/com/byoutline/eventcallback/ResponseEventImpl.java) | [ResponseEventWithArgImpl](https://github.com/byoutline/OttoCachedField/blob/master/src/main/java/com/byoutline/ottocachedfield/events/ResponseEventWithArgImpl.java)
 [Provider](https://docs.oracle.com/javaee/7/api/javax/inject/Provider.html) | [ProviderWithArg](https://github.com/byoutline/CachedField/blob/master/src/main/java/com/byoutline/cachedfield/ProviderWithArg.java)
+
 
 ### Builder syntax for OttoCachedField instance creation ###
 You may choose use ```builder``` instead of constructor to create yout fields:
