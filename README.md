@@ -32,6 +32,7 @@ public final CachedField<YourExpensiveValue> expensiveValue = new OttoCachedFiel
 public class ValueFetchedEvent extends ResponseEventImpl<YourExpensiveValue> {
 }
 ```
+
 If you skipped init common settings step or want to override default project value for this specific field you may also pass sessionIdProvider and Otto bus instance.
 
 Note: It is advised to put your cached field in some sort of a manager or other object that is not connected to Android view lifecycle. It will allow you to keep your cached values between screen rotation, etc.
@@ -62,8 +63,31 @@ Note: It is advised to put your cached field in some sort of a manager or other 
     }
 ```
 
+Calling ```postValue``` or ```refresh``` will always cause CachedField to post either Success Event or Error Event.
+
 #### Interface description ####
 See [Cached field](https://github.com/byoutline/CachedField#interface-description)
+
+#### Parametric fields ####
+
+In case your value depends on some argument  (for example API GET call that requires item ID) you can use [OttoCachedFieldWithArg](https://github.com/byoutline/OttoCachedField/blob/master/src/main/java/com/byoutline/ottocachedfield/OttoCachedFieldWithArg.java) . It supports same methods but requires you to pass argument to ```post``` and ```refresh``` calls. Only one value will be cached at the time, so changing argument will force a refresh .
+
+If you ask ```OttoCachedFieldWithArg``` for value with new argument before last call had chance to finish, Success Event will be posted only about with value for current argument. Previous call will be assumed obsolete, and its return value(if any) will be discarded and Error Event will be posted instead.
+
+### Builder syntax for OttoCachedField instance creation ###
+You may choose use ```builder``` instead of constructor to create yout fields:
+```java
+new OttoCachedFieldBuilder<>()
+    .withValueProvider(new Provider<YourExpensiveValue>() {
+        @Override
+        public YourExpensiveValue get() {
+            return service.getValueFromApi();
+        }
+    }).withSuccessEvent(new ValueFetchedEvent())
+    .withResponseErrorEvent(new ValueFetchFailedEvent())
+    .build();
+```
+Builder syntax is slightly longer, but makes it obvious which argument does what, and allows for better IDE autocompletion.
 
 Example Project
 ---------------
