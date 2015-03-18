@@ -1,6 +1,6 @@
 OttoCachedField
 ===============
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.byoutline.ottocachedfield/ottocachedfield/badge.svg?style=flat)](http://mvnrepository.com/artifact/com.byoutline.ottocachedfield/ottocachedfield)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.byoutline.ottocachedfield/ottocachedfield/badge.svg?style=flat)](http://mvnrepository.com/artifact/com.byoutline.ottocachedfield/ottocachedfield) ![Travis badge](https://img.shields.io/travis/byoutline/OttoCachedField.svg)
 
 Wrapper for expensive values (like API calls) that post results by Otto bus. Additionally it guards against displaying data from one user to another.
 
