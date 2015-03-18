@@ -1,4 +1,8 @@
 language: java
 
 jdk:
-- openjdk6
+  - openjdk6
+
+notifications:
+  email:
+    - sebastian.kacprzak@byoutline.com
