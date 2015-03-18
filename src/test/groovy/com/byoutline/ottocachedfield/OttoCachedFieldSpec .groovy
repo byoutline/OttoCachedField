@@ -84,4 +84,42 @@ class OttoCachedFieldSpec extends spock.lang.Specification {
         then:
         1 * bus.post(expEvent)
     }
+
+    def "2 arg constructor should post on default bus"() {
+        given:
+        def field = new OttoCachedField(MockFactory.getStringGetter(value), successEvent)
+
+        when:
+        field.postValue()
+        sleep 3
+
+        then:
+        1 * bus.post(_)
+    }
+
+    def "3 arg constructor with error ResponseEvent should post on default bus"() {
+        given:
+        def field = new OttoCachedField(MockFactory.getStringGetter(value), successEvent, errorEvent)
+
+        when:
+        field.postValue()
+        sleep 3
+
+        then:
+        1 * bus.post(_)
+    }
+
+    def "3 arg constructor with generic error event should post on default bus"() {
+        given:
+        def field = new OttoCachedField(MockFactory.getStringGetter(value), successEvent, new Object())
+
+        when:
+        field.postValue()
+        sleep 3
+
+        then:
+        1 * bus.post(_)
+    }
+
+
 }
