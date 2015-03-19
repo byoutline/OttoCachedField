@@ -17,7 +17,7 @@ To avoid passing same values to each of your CachedFields put following into you
 ```java
 OttoCachedField.init(sessionIdProvider, bus);
 ```
-where bus is ```Otto``` bus instance, and sessionIdProvider is a ```Provider``` of current session. ```Provider``` is supposed to return same string as long as same user is logged in. Typically it something like authorization header for your API calls.
+where bus is ```Otto``` bus instance, and sessionIdProvider is a ```Provider``` of current session. ```Provider``` is supposed to return same string as long as the same user is logged in. Typically it is something like authorization header for your API calls.
 
 ##### Declare your fields #####
 To declare your field you should pass it a ```Provider```, that synchronously calculates/fetches your value. You also have to pass ```ResponseEvent``` that will be posted when value its ready, and optionally Event that will be posted in case of failure. 
