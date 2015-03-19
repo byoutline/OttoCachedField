@@ -17,10 +17,10 @@ To avoid passing same values to each of your CachedFields put following into you
 ```java
 OttoCachedField.init(sessionIdProvider, bus);
 ```
-where bus is ```Otto``` bus instance, and sessionIdProvider is a ```Provider``` of current session. ```Provider``` is supposed to return same string as long as the same user is logged in. Typically it is something like authorization header for your API calls.
+where bus is ```Otto``` bus instance, and sessionIdProvider is a ```Provider``` of current session. ```Provider``` is supposed to return same string as long as same user is logged in. Typically it something like authorization header for your API calls.
 
 ##### Declare your fields #####
-To declare your field you should pass it a ```Provider```, that synchronously calculates/fetches your value. You also have to pass ```ResponseEvent``` that will be posted when value its ready, and optionally Event that will be posted in case of failure. 
+To declare your field you should pass it a ```Provider```, that synchronously calculates/fetches your value. You also have to pass ```ResponseEvent``` that will be posted when value is ready, and optionally Event that will be posted in case of failure. 
 ```java
 public final CachedField<YourExpensiveValue> expensiveValue = new OttoCachedField<>(new Provider<YourExpensiveValue>() {
         @Override
@@ -38,7 +38,7 @@ If you skipped init common settings step or want to override default project val
 
 Note: It is advised to put your cached field in some sort of a manager or other object that is not connected to Android view lifecycle. It will allow you to keep your cached values between screen rotation, etc.
 
-##### Get value when it ready #####
+##### Get value when it's ready #####
 ```java
     @Override
     public void onResume() {
@@ -67,7 +67,9 @@ Note: It is advised to put your cached field in some sort of a manager or other 
 Calling ```postValue``` or ```refresh``` will always cause CachedField to post either Success Event or Error Event.
 
 ### Interface description ###
-See [Cached field](https://github.com/byoutline/CachedField#interface-description)
+
+See [Cached field](https://github.com/byoutline/CachedField#interface-description) to read more about basic methods like ```refresh```, ```drop``` etc.
+
 
 ### Parametric fields ###
 
