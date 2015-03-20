@@ -12,7 +12,7 @@ How to use
 ##### Including dependency #####
 Add to your ```build.gradle```:
 ```groovy
-compile 'com.byoutline.ottocachedfield:ottocachedfield:1.3.2'
+compile 'com.byoutline.ottocachedfield:ottocachedfield:1.3.5'
 ```
 
 ##### Init common settings #####
