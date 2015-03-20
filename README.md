@@ -15,7 +15,7 @@ Add to your ```build.gradle```:
 compile 'com.byoutline.ottocachedfield:ottocachedfield:1.3.2'
 ```
 
-##### Init commmon settings #####
+##### Init common settings #####
 To avoid passing same values to each of your CachedFields put following into your code (typically to ```Application``` ```onCreate``` method).
 ```java
 OttoCachedField.init(sessionIdProvider, bus);
@@ -95,7 +95,7 @@ without arguments                              | with arguments
 
 
 ### Builder syntax for OttoCachedField instance creation ###
-You may choose use ```builder``` instead of constructor to create yout fields:
+You may choose use ```builder``` instead of constructor to create your fields:
 ```java
 new OttoCachedFieldBuilder<>()
     .withValueProvider(new Provider<YourExpensiveValue>() {
