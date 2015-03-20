@@ -1,6 +1,9 @@
 OttoCachedField
 ===============
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.byoutline.ottocachedfield/ottocachedfield/badge.svg?style=flat)](http://mvnrepository.com/artifact/com.byoutline.ottocachedfield/ottocachedfield)  
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.byoutline.ottocachedfield/ottocachedfield/badge.svg?style=flat)](http://mvnrepository.com/artifact/com.byoutline.ottocachedfield/ottocachedfield)
+[![Coverage Status](https://coveralls.io/repos/byoutline/OttoCachedField/badge.svg?branch=master)](https://coveralls.io/r/byoutline/OttoCachedField?branch=master)
+ master:  [![Build Status](https://travis-ci.org/byoutline/OttoCachedField.svg?branch=master)](https://travis-ci.org/byoutline/OttoCachedField)
+ develop: [![Build Status](https://travis-ci.org/byoutline/OttoCachedField.svg?branch=develop)](https://travis-ci.org/byoutline/OttoCachedField)
 
 Wrapper for expensive values (like API calls) that post results by Otto bus. Additionally it guards against displaying data from one user to another.
 
