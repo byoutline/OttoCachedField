@@ -1,5 +1,8 @@
 package com.byoutline.ottocachedfield
 
+import com.byoutline.cachedfield.CachedField
+import com.byoutline.cachedfield.FieldState
+import com.byoutline.cachedfield.FieldStateListener
 import com.byoutline.eventcallback.ResponseEvent
 import com.squareup.otto.Bus
 import spock.lang.Shared
@@ -17,6 +20,22 @@ class OttoCachedFieldSpec extends spock.lang.Specification {
     ResponseEvent<String> successEvent
     ResponseEvent<Exception> errorEvent
     Bus bus
+
+    static void postAndWaitUntilFieldStopsLoading(CachedField field) {
+        boolean duringValueLoad = true
+        def listener = { FieldState newState ->
+            if (newState == FieldState.NOT_LOADED || newState == FieldState.LOADED) {
+                duringValueLoad = false
+            }
+        } as FieldStateListener
+
+        field.addStateListener(listener)
+        field.postValue()
+        while (duringValueLoad) {
+            sleep 1
+        }
+        field.removeStateListener(listener)
+    }
 
     def setup() {
         bus = Mock()
@@ -55,8 +74,7 @@ class OttoCachedFieldSpec extends spock.lang.Specification {
                 .withSuccessEvent(successEvent)
                 .withResponseErrorEvent(errorEvent)
                 .build();
-        field.postValue()
-        sleep 3
+        postAndWaitUntilFieldStopsLoading(field)
 
         then:
         sC * successEvent.setResponse(value)
@@ -78,8 +96,7 @@ class OttoCachedFieldSpec extends spock.lang.Specification {
                 .build();
 
         when:
-        field.postValue()
-        sleep 3
+        postAndWaitUntilFieldStopsLoading(field)
 
         then:
         1 * bus.post(expEvent)
@@ -90,8 +107,7 @@ class OttoCachedFieldSpec extends spock.lang.Specification {
         def field = new OttoCachedField(MockFactory.getStringGetter(value), successEvent)
 
         when:
-        field.postValue()
-        sleep 3
+        postAndWaitUntilFieldStopsLoading(field)
 
         then:
         1 * bus.post(_)
@@ -102,8 +118,7 @@ class OttoCachedFieldSpec extends spock.lang.Specification {
         def field = new OttoCachedField(MockFactory.getStringGetter(value), successEvent, errorEvent)
 
         when:
-        field.postValue()
-        sleep 3
+        postAndWaitUntilFieldStopsLoading(field)
 
         then:
         1 * bus.post(_)
@@ -114,8 +129,7 @@ class OttoCachedFieldSpec extends spock.lang.Specification {
         def field = new OttoCachedField(MockFactory.getStringGetter(value), successEvent, new Object())
 
         when:
-        field.postValue()
-        sleep 3
+        postAndWaitUntilFieldStopsLoading(field)
 
         then:
         1 * bus.post(_)

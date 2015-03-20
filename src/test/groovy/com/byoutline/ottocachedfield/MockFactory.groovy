@@ -1,6 +1,5 @@
 package com.byoutline.ottocachedfield
 
-import com.byoutline.cachedfield.FieldState
 import com.byoutline.cachedfield.ProviderWithArg
 
 import javax.inject.Provider
@@ -42,10 +41,4 @@ static Provider<String> getFailingStringGetter(Exception ex) {
 static ProviderWithArg<String, Integer> getFailingStringGetterWithArg() {
     return [get     : { Integer arg -> throw new RuntimeException("E" + arg) },
             toString: { "fail provider with arg" }] as ProviderWithArg<String, Integer>
-}
-
-static void waitUntilFieldLoads(OttoCachedField field) {
-    while (field.getState() != FieldState.LOADED) {
-        sleep 1
-    }
 }

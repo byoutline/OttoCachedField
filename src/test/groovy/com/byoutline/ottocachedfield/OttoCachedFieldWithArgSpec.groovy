@@ -1,5 +1,8 @@
 package com.byoutline.ottocachedfield
 
+import com.byoutline.cachedfield.CachedFieldWithArg
+import com.byoutline.cachedfield.FieldState
+import com.byoutline.cachedfield.FieldStateListener
 import com.byoutline.ottocachedfield.events.ResponseEventWithArg
 import com.squareup.otto.Bus
 import spock.lang.Shared
@@ -17,6 +20,22 @@ class OttoCachedFieldWithArgSpec extends spock.lang.Specification {
     ResponseEventWithArg<Exception, Integer> errorEvent
     Bus bus
 
+    static void postAndWaitUntilFieldStopsLoading(CachedFieldWithArg field, int arg) {
+        boolean duringValueLoad = true
+        def listener = { FieldState newState ->
+            if (newState == FieldState.NOT_LOADED || newState == FieldState.LOADED) {
+                duringValueLoad = false
+            }
+        } as FieldStateListener
+
+        field.addStateListener(listener)
+        field.postValue(arg)
+        while (duringValueLoad) {
+            sleep 1
+        }
+        field.removeStateListener(listener)
+    }
+
     def setup() {
         bus = Mock()
         successEvent = Mock()
@@ -26,7 +45,7 @@ class OttoCachedFieldWithArgSpec extends spock.lang.Specification {
     }
 
     @Unroll
-    def "should post value: #val , error times: #eC for arg: #arg"() {
+    def "should post value: #val , times: #sC for arg: #arg"() {
         given:
         OttoCachedFieldWithArg field = OttoCachedFieldWithArg.builder()
                 .withValueProvider(MockFactory.getStringGetter(argToValueMap))
@@ -34,8 +53,7 @@ class OttoCachedFieldWithArgSpec extends spock.lang.Specification {
                 .withResponseErrorEvent(errorEvent)
                 .build();
         when:
-        field.postValue(arg)
-        sleep 3
+        postAndWaitUntilFieldStopsLoading(field, arg)
 
         then:
 
@@ -63,12 +81,10 @@ class OttoCachedFieldWithArgSpec extends spock.lang.Specification {
                 .withResponseErrorEvent(errorEvent)
                 .build();
         when:
-        field.postValue(2)
-        sleep 3
+        postAndWaitUntilFieldStopsLoading(field, 2)
 
         then:
         errorVal.message == "E2"
         errorArg == 2
     }
-
 }
