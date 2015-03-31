@@ -1,6 +1,4 @@
 apply plugin: 'java'
-// For spock testing
-apply plugin: 'groovy'
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
