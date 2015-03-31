@@ -8,6 +8,8 @@ import com.squareup.otto.Bus
 import spock.lang.Shared
 import spock.lang.Unroll
 
+import javax.inject.Provider
+
 /**
  *
  * @author Sebastian Kacprzak <sebastian.kacprzak at byoutline.com> on 27.06.14.
@@ -86,5 +88,25 @@ class OttoCachedFieldWithArgSpec extends spock.lang.Specification {
         then:
         errorVal.message == "E2"
         errorArg == 2
+    }
+
+    def "when custom bus passed to builder it should be used instead of default"() {
+        given:
+        def sessionProv = { return "custom" } as Provider<String>
+        Bus customBus = Mock()
+        OttoCachedFieldWithArg field = OttoCachedFieldWithArg.builder()
+                .withValueProvider(MockFactory.getStringGetter(argToValueMap))
+                .withSuccessEvent(successEvent)
+                .withResponseErrorEvent(errorEvent)
+                .withCustomSessionIdProvider(sessionProv)
+                .withCustomBus(customBus)
+                .build();
+
+        when:
+        postAndWaitUntilFieldStopsLoading(field, 1)
+
+        then:
+        1 * customBus.post(_)
+        0 * bus.post(_)
     }
 }
