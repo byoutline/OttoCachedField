@@ -1,21 +1,14 @@
 apply plugin: 'java'
 // For spock testing
 apply plugin: 'groovy'
-apply plugin: "jacoco"
-apply plugin: 'com.github.kt3k.coveralls'
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-compileJava {
-    sourceCompatibility = 1.6
-    targetCompatibility = 1.6
-    def jdk6Home = System.getenv()['JAVA6_HOME']
-    options.bootClasspath = (new File(jdk6Home, "/jre/lib/rt.jar")).canonicalPath
-}
-
 buildscript {
     repositories {
-        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
 
     dependencies {
@@ -23,6 +16,8 @@ buildscript {
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.3.1'
     }
 }
+
+apply from: 'javaLib.gradle'
 
 repositories {
     mavenCentral()
@@ -38,32 +33,6 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.8.0'
     compile 'com.squareup:otto:1.3.5'
     compile 'com.byoutline.cachedfield:cachedfield:1.3.3'
-
-    // For spock testing:
-    testCompile 'org.codehaus.groovy:groovy-all:2.4.1'
-    testCompile group: 'junit', name: 'junit', version: '4.10'
-    testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
-    testRuntime "cglib:cglib-nodep:2.2.2"
-    // allows mocking of classes (in addition to interfaces)
-    testRuntime "org.objenesis:objenesis:1.2"
-    // allows mocking of classes without default constructor (together with CGLIB)
-}
-
-allprojects {
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint:unchecked"
-        }
-    }
-}
-
-jacocoTestReport {
-    reports {
-        xml.enabled true // coveralls plugin depends on xml format report
-        html.enabled = true
-        csv.enabled false
-        html.destination "${buildDir}/jacocoHtml"
-    }
 }
 
 apply from: 'maven-push.gradle'
