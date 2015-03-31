@@ -1,0 +1,5 @@
+apply from: 'gradle/byoutline/forceJava6.gradle'
+apply from: 'gradle/byoutline/codeCoverage.gradle'
+apply from: 'gradle/byoutline/checkGenerics.gradle'
+apply from: 'gradle/byoutline/spockTests.gradle'
+

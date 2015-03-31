@@ -1,5 +1,0 @@
-apply from: 'forceJava6.gradle'
-apply from: 'codeCoverage.gradle'
-apply from: 'checkGenerics.gradle'
-apply from: 'spockTests.gradle'
-
