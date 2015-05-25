@@ -83,7 +83,7 @@ If you ask ```OttoCachedFieldWithArg``` for value with new argument before last 
 If you want to check which call to field was completed check ```argValue``` parameter passed to your [ResponseEventWithArg](https://github.com/byoutline/OttoCachedField/blob/master/src/main/java/com/byoutline/ottocachedfield/events/ResponseEventWithArg.java)
 
 
-Prametric field classes have ```withArg``` suffix, and behave same as their no arg counterparts. Split exist only to enforce passing extra argument to methods that depend on it.
+Parametric field classes have ```withArg``` suffix, and behave same as their no arg counterparts. Split exist only to enforce passing extra argument to methods that depend on it.
 
 without arguments                              | with arguments
 -----------------------------------------------|-----------------------------------------------
