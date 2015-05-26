@@ -1,14 +1,10 @@
 package com.byoutline.ottocachedfield;
 
-import com.byoutline.cachedfield.CachedField;
-import com.byoutline.cachedfield.CachedFieldWithArgImpl;
-import com.byoutline.cachedfield.ErrorListenerWithArg;
-import com.byoutline.cachedfield.ProviderWithArg;
-import com.byoutline.cachedfield.SuccessListenerWithArg;
-import com.byoutline.ottocachedfield.events.ResponseEventWithArg;
-import com.byoutline.ottocachedfield.internal.OttoErrorListenerWithArg;
-import com.byoutline.ottocachedfield.internal.OttoSuccessListenerWithArg;
-import com.squareup.otto.Bus;
+import com.byoutline.cachedfield.*;
+import com.byoutline.ibuscachedfield.events.ResponseEventWithArg;
+import com.byoutline.ibuscachedfield.internal.IBusErrorListenerWithArg;
+import com.byoutline.ibuscachedfield.internal.IBusSuccessListenerWithArg;
+import com.byoutline.ottoeventcallback.OttoIBus;
 
 import javax.inject.Provider;
 
@@ -24,18 +20,18 @@ public class OttoCachedFieldWithArg<RETURN_TYPE, ARG_TYPE> extends CachedFieldWi
     OttoCachedFieldWithArg(Provider<String> sessionIdProvider, 
             ProviderWithArg<RETURN_TYPE, ARG_TYPE> valueGetter, 
             ResponseEventWithArg<RETURN_TYPE, ARG_TYPE> successEvent,
-            ResponseEventWithArg<Exception, ARG_TYPE> errorEvent, Bus bus) {
+            ResponseEventWithArg<Exception, ARG_TYPE> errorEvent, OttoIBus bus) {
         this(sessionIdProvider,
                 valueGetter,
-                new OttoSuccessListenerWithArg<RETURN_TYPE, ARG_TYPE>(bus, successEvent),
-                new OttoErrorListenerWithArg<ARG_TYPE>(bus, errorEvent),
+                new IBusSuccessListenerWithArg<RETURN_TYPE, ARG_TYPE>(bus, successEvent),
+                new IBusErrorListenerWithArg<ARG_TYPE>(bus, errorEvent),
                 bus);
     }
 
     private OttoCachedFieldWithArg(Provider<String> sessionProvider,
                             ProviderWithArg<RETURN_TYPE, ARG_TYPE> valueGetter,
                             SuccessListenerWithArg<RETURN_TYPE, ARG_TYPE> successHandler, 
-                            ErrorListenerWithArg<ARG_TYPE> errorHandler, Bus bus) {
+                            ErrorListenerWithArg<ARG_TYPE> errorHandler, OttoIBus bus) {
         super(sessionProvider, valueGetter, successHandler, errorHandler);
         bus.register(valueGetter);
     }

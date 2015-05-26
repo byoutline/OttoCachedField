@@ -1,7 +1,8 @@
 package com.byoutline.ottocachedfield;
 
 import com.byoutline.eventcallback.ResponseEvent;
-import com.byoutline.ottocachedfield.internal.ErrorEvent;
+import com.byoutline.ibuscachedfield.internal.ErrorEvent;
+import com.byoutline.ottoeventcallback.OttoIBus;
 import com.squareup.otto.Bus;
 
 import javax.inject.Provider;
@@ -104,6 +105,6 @@ public class OttoCachedFieldBuilder<RETURN_TYPE> {
     }
 
     private OttoCachedField<RETURN_TYPE> build() {
-        return new OttoCachedField<RETURN_TYPE>(sessionIdProvider, valueGetter, successEvent, errorEvent, bus);
+        return new OttoCachedField<RETURN_TYPE>(sessionIdProvider, valueGetter, successEvent, errorEvent, new OttoIBus(bus));
     }
 }

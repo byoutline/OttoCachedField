@@ -1,7 +1,8 @@
 package com.byoutline.ottocachedfield;
 
 import com.byoutline.cachedfield.ProviderWithArg;
-import com.byoutline.ottocachedfield.events.ResponseEventWithArg;
+import com.byoutline.ibuscachedfield.events.ResponseEventWithArg;
+import com.byoutline.ottoeventcallback.OttoIBus;
 import com.squareup.otto.Bus;
 
 import javax.annotation.Nullable;
@@ -99,6 +100,6 @@ public class OttoCachedFieldWithArgBuilder<RETURN_TYPE, ARG_TYPE> {
     }
 
     private OttoCachedFieldWithArg<RETURN_TYPE, ARG_TYPE> build() {
-        return new OttoCachedFieldWithArg<RETURN_TYPE, ARG_TYPE>(sessionIdProvider, valueGetter, successEvent, errorEvent, bus);
+        return new OttoCachedFieldWithArg<RETURN_TYPE, ARG_TYPE>(sessionIdProvider, valueGetter, successEvent, errorEvent, new OttoIBus(bus));
     }
 }

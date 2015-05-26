@@ -1,14 +1,11 @@
 package com.byoutline.ottocachedfield;
 
-import com.byoutline.cachedfield.CachedField;
-import com.byoutline.cachedfield.CachedFieldImpl;
-import com.byoutline.cachedfield.ErrorListener;
-import com.byoutline.cachedfield.FieldStateListener;
-import com.byoutline.cachedfield.SuccessListener;
+import com.byoutline.cachedfield.*;
 import com.byoutline.eventcallback.ResponseEvent;
-import com.byoutline.ottocachedfield.internal.ErrorEvent;
-import com.byoutline.ottocachedfield.internal.OttoErrorListener;
-import com.byoutline.ottocachedfield.internal.OttoSuccessListener;
+import com.byoutline.ibuscachedfield.internal.ErrorEvent;
+import com.byoutline.ibuscachedfield.internal.IBusErrorListener;
+import com.byoutline.ibuscachedfield.internal.IBusSuccessListener;
+import com.byoutline.ottoeventcallback.OttoIBus;
 import com.squareup.otto.Bus;
 
 import javax.inject.Provider;
@@ -41,20 +38,20 @@ public class OttoCachedField<RETURN_TYPE> extends CachedFieldImpl<RETURN_TYPE> {
     }
 
     public OttoCachedField(Provider<String> sessionIdProvider, Provider<RETURN_TYPE> valueGetter, ResponseEvent<RETURN_TYPE> successEvent, Object errorEvent, Bus bus) {
-        this(sessionIdProvider, valueGetter, successEvent, ErrorEvent.genericEvent(errorEvent), bus);
+        this(sessionIdProvider, valueGetter, successEvent, ErrorEvent.genericEvent(errorEvent), new OttoIBus(bus));
     }
 
-    OttoCachedField(Provider<String> sessionIdProvider, Provider<RETURN_TYPE> valueGetter, ResponseEvent<RETURN_TYPE> successEvent, ErrorEvent errorEvent, Bus bus) {
+    OttoCachedField(Provider<String> sessionIdProvider, Provider<RETURN_TYPE> valueGetter, ResponseEvent<RETURN_TYPE> successEvent, ErrorEvent errorEvent, OttoIBus bus) {
         this(sessionIdProvider,
                 valueGetter,
-                new OttoSuccessListener<RETURN_TYPE>(bus, successEvent),
-                new OttoErrorListener(bus, errorEvent),
+                new IBusSuccessListener<RETURN_TYPE>(bus, successEvent),
+                new IBusErrorListener(bus, errorEvent),
                 bus);
     }
 
     private OttoCachedField(Provider<String> sessionProvider,
                             Provider<RETURN_TYPE> valueGetter,
-                            SuccessListener<RETURN_TYPE> successHandler, ErrorListener errorHandler, Bus bus) {
+                            SuccessListener<RETURN_TYPE> successHandler, ErrorListener errorHandler, OttoIBus bus) {
         super(sessionProvider, valueGetter, successHandler, errorHandler);
         bus.register(valueGetter);
     }
