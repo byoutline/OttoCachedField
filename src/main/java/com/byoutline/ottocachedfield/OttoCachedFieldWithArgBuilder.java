@@ -1,6 +1,9 @@
 package com.byoutline.ottocachedfield;
 
 import com.byoutline.cachedfield.ProviderWithArg;
+import com.byoutline.cachedfield.dbcache.DbCacheArg;
+import com.byoutline.cachedfield.dbcache.DbCachedValueProviderWithArg;
+import com.byoutline.cachedfield.dbcache.DbWriterWithArg;
 import com.byoutline.ibuscachedfield.events.ResponseEventWithArg;
 import com.byoutline.ottoeventcallback.OttoIBus;
 import com.squareup.otto.Bus;
@@ -31,6 +34,38 @@ public class OttoCachedFieldWithArgBuilder<RETURN_TYPE, ARG_TYPE> {
     public SuccessEvent withValueProvider(ProviderWithArg<RETURN_TYPE, ARG_TYPE> valueProvider) {
         this.valueGetter = valueProvider;
         return new SuccessEvent();
+    }
+
+    public <API_RETURN_TYPE> DbCacheBuilderReader<API_RETURN_TYPE, RETURN_TYPE, ARG_TYPE> withApiFetcher(ProviderWithArg<API_RETURN_TYPE, ARG_TYPE> apiValueProvider) {
+        return new DbCacheBuilderReader<API_RETURN_TYPE, RETURN_TYPE, ARG_TYPE>(apiValueProvider);
+    }
+
+    public static class DbCacheBuilderReader<API_RETURN_TYPE, RETURN_TYPE, ARG_TYPE> {
+        private final ProviderWithArg<API_RETURN_TYPE, ARG_TYPE> apiValueProvider;
+
+        public DbCacheBuilderReader(ProviderWithArg<API_RETURN_TYPE, ARG_TYPE> apiValueProvider) {
+            this.apiValueProvider = apiValueProvider;
+        }
+
+        public <API_RETURN_TYPE> DbCacheBuilderWriter<API_RETURN_TYPE, RETURN_TYPE, ARG_TYPE> withDbWriter(DbWriterWithArg<API_RETURN_TYPE, ARG_TYPE> dbSaver) {
+            return new DbCacheBuilderWriter(apiValueProvider, dbSaver);
+        }
+    }
+
+    public static class DbCacheBuilderWriter<API_RETURN_TYPE, RETURN_TYPE, ARG_TYPE> {
+        private final ProviderWithArg<API_RETURN_TYPE, ARG_TYPE> apiValueProvider;
+        private final DbWriterWithArg<API_RETURN_TYPE, ARG_TYPE> dbSaver;
+
+        public DbCacheBuilderWriter(ProviderWithArg<API_RETURN_TYPE, ARG_TYPE> apiValueProvider, DbWriterWithArg<API_RETURN_TYPE, ARG_TYPE> dbSaver) {
+            this.apiValueProvider = apiValueProvider;
+            this.dbSaver = dbSaver;
+        }
+
+        public OttoCachedFieldWithArgBuilder.SuccessEvent withDbReader(ProviderWithArg<RETURN_TYPE, ARG_TYPE> dbValueProvider) {
+            ProviderWithArg<RETURN_TYPE, DbCacheArg<ARG_TYPE>> valueProvider = new DbCachedValueProviderWithArg<API_RETURN_TYPE, RETURN_TYPE, ARG_TYPE>(apiValueProvider, dbSaver, dbValueProvider);
+            return new OttoCachedFieldWithArgBuilder<RETURN_TYPE, DbCacheArg<ARG_TYPE>>()
+                    .withValueProvider(valueProvider);
+        }
     }
 
     public class SuccessEvent {
