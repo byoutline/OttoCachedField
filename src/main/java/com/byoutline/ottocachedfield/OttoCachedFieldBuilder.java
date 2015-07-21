@@ -10,6 +10,8 @@ import com.byoutline.ottoeventcallback.OttoIBus;
 import com.squareup.otto.Bus;
 
 import javax.inject.Provider;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 
 /**
  * Fluent interface builder of {@link OttoCachedField}. If you do not like
@@ -25,10 +27,14 @@ public class OttoCachedFieldBuilder<RETURN_TYPE> {
     private ErrorEvent errorEvent;
     private Provider<String> sessionIdProvider;
     private Bus bus;
+    private ExecutorService valueGetterExecutor;
+    private Executor stateListenerExecutor;
 
     public OttoCachedFieldBuilder() {
         bus = OttoCachedField.defaultBus;
         sessionIdProvider = OttoCachedField.defaultSessionIdProvider;
+        valueGetterExecutor = OttoCachedField.defaultValueGetterExecutor;
+        stateListenerExecutor = OttoCachedField.defaultStateListenerExecutor;
     }
 
     public SuccessEvent withValueProvider(Provider<RETURN_TYPE> valueProvider) {
@@ -85,14 +91,14 @@ public class OttoCachedFieldBuilder<RETURN_TYPE> {
         private ErrorEventSetter() {
         }
 
-        public CustomSessionIdProvider withGenericErrorEvent(Object errorEvent) {
+        public OverrideDefaultsSetter withGenericErrorEvent(Object errorEvent) {
             OttoCachedFieldBuilder.this.errorEvent = ErrorEvent.genericEvent(errorEvent);
-            return new CustomSessionIdProvider();
+            return new OverrideDefaultsSetter();
         }
 
-        public CustomSessionIdProvider withResponseErrorEvent(ResponseEvent<Exception> errorEvent) {
+        public OverrideDefaultsSetter withResponseErrorEvent(ResponseEvent<Exception> errorEvent) {
             OttoCachedFieldBuilder.this.errorEvent = ErrorEvent.responseEvent(errorEvent);
-            return new CustomSessionIdProvider();
+            return new OverrideDefaultsSetter();
         }
 
         public OttoCachedField<RETURN_TYPE> build() {
@@ -101,29 +107,29 @@ public class OttoCachedFieldBuilder<RETURN_TYPE> {
         }
     }
 
-    public class CustomSessionIdProvider {
+    public class OverrideDefaultsSetter {
 
-        private CustomSessionIdProvider() {
+        private OverrideDefaultsSetter() {
         }
 
-        public CustomBus withCustomSessionIdProvider(Provider<String> sessionIdProvider) {
+        public OverrideDefaultsSetter withCustomSessionIdProvider(Provider<String> sessionIdProvider) {
             OttoCachedFieldBuilder.this.sessionIdProvider = sessionIdProvider;
-            return new CustomBus();
+            return this;
         }
 
-        public OttoCachedField<RETURN_TYPE> build() {
-            return OttoCachedFieldBuilder.this.build();
-        }
-    }
-
-    public class CustomBus {
-
-        private CustomBus() {
-        }
-
-        public Builder withCustomBus(Bus bus) {
+        public OverrideDefaultsSetter withCustomBus(Bus bus) {
             OttoCachedFieldBuilder.this.bus = bus;
-            return new Builder();
+            return this;
+        }
+
+        public OverrideDefaultsSetter withCustomValueGetterExecutor(ExecutorService valueGetterExecutor) {
+            OttoCachedFieldBuilder.this.valueGetterExecutor = valueGetterExecutor;
+            return this;
+        }
+
+        public OverrideDefaultsSetter withCustomStateListenerExecutor(Executor stateListenerExecutor) {
+            OttoCachedFieldBuilder.this.stateListenerExecutor = stateListenerExecutor;
+            return this;
         }
 
         public OttoCachedField<RETURN_TYPE> build() {
@@ -142,6 +148,7 @@ public class OttoCachedFieldBuilder<RETURN_TYPE> {
     }
 
     private OttoCachedField<RETURN_TYPE> build() {
-        return new OttoCachedField<RETURN_TYPE>(sessionIdProvider, valueGetter, successEvent, errorEvent, new OttoIBus(bus));
+        return new OttoCachedField<RETURN_TYPE>(sessionIdProvider, valueGetter, successEvent, errorEvent, new OttoIBus(bus),
+                valueGetterExecutor, stateListenerExecutor);
     }
 }
