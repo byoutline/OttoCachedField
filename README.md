@@ -12,7 +12,7 @@ How to use
 ##### Including dependency #####
 Add to your ```build.gradle```:
 ```groovy
-compile 'com.byoutline.ottocachedfield:ottocachedfield:1.3.5'
+compile 'com.byoutline.ottocachedfield:ottocachedfield:1.4.0'
 ```
 
 ##### Init common settings #####
@@ -116,3 +116,12 @@ If you want to see complete project that uses OttoCachedField take a look at [An
 Not an Otto bus user?
 ---------------------
 If you do not want to use Otto bus check [CachedField](https://github.com/byoutline/CachedField) project.
+
+#### Latest changes ####
+* 1.4.0 
+  * Added support for providing custom ```ExecutorService```/```Executor``` for value loading and state listener calls
+  * Added DB Cache utils - You can use ```withApiFetcher```, ```withDbWriter```, ```withDbReader``` methods in builders to combine
+  steps of fetching data from API, saving it to db, and loading it from DB. It allows to decide at runtime whether you
+  want to reload data from API or from DB by passing ```FetchType.API``` or ```FetchType.DB``` as argument to ```post```
+  and ```reload```
+  * Changed builders to allow calling ```withCustomSessionIdProvider``` and ```withCustomBus``` in any order.
