@@ -75,11 +75,11 @@ class DbCacheSpec extends spock.lang.Specification {
                 .build();
 
         when:
-        OttoCachedFieldWithArgSpec.postAndWaitUntilFieldStopsLoading(field, new DbCacheArg(1, FetchType.API))
+        OttoCachedFieldWithArgSpec.postAndWaitUntilFieldStopsLoading(field, DbCacheArg.create(1, FetchType.API))
 
         then:
         'a' == successEventWithArg.getResponse()
-        new DbCacheArg(1, FetchType.API) == successEventWithArg.getArgValue()
+        DbCacheArg.create(1, FetchType.API) == successEventWithArg.getArgValue()
     }
 
     def "should post value from DB"() {
