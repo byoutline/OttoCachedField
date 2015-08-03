@@ -1,16 +1,12 @@
 package com.byoutline.ottocachedfield.events;
 
 /**
+ * Moved to {@link com.byoutline.ibuscachedfield.events.ResponseEventWithArg}.
+ * This copy was kept only for backward compatibility.
  *
- * @author Sebastian Kacprzak <sebastian.kacprzak at byoutline.com>
  * @param <RETURN_TYPE> Type of returned value
- * @param <ARG_TYPE> Type of argument required to get response
+ * @param <ARG_TYPE>    Type of argument required to get response
+ * @author Sebastian Kacprzak <sebastian.kacprzak at byoutline.com>
  */
-public interface ResponseEventWithArg<RETURN_TYPE, ARG_TYPE> {
-
-    /**
-     * @param value response from server/or calculated value.
-     * @param argValue argument that was used to get value.
-     */
-    void setResponse(RETURN_TYPE value, ARG_TYPE argValue);
+public interface ResponseEventWithArg<RETURN_TYPE, ARG_TYPE> extends com.byoutline.ibuscachedfield.events.ResponseEventWithArg<RETURN_TYPE, ARG_TYPE> {
 }

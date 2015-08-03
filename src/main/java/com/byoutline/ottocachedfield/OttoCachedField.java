@@ -1,17 +1,19 @@
 package com.byoutline.ottocachedfield;
 
-import com.byoutline.cachedfield.CachedField;
-import com.byoutline.cachedfield.CachedFieldImpl;
-import com.byoutline.cachedfield.ErrorListener;
-import com.byoutline.cachedfield.FieldStateListener;
-import com.byoutline.cachedfield.SuccessListener;
+import com.byoutline.cachedfield.*;
 import com.byoutline.eventcallback.ResponseEvent;
-import com.byoutline.ottocachedfield.internal.ErrorEvent;
-import com.byoutline.ottocachedfield.internal.OttoErrorListener;
-import com.byoutline.ottocachedfield.internal.OttoSuccessListener;
+import com.byoutline.ibuscachedfield.internal.ErrorEvent;
+import com.byoutline.ibuscachedfield.internal.IBusErrorListener;
+import com.byoutline.ibuscachedfield.internal.IBusSuccessListener;
+import com.byoutline.ottoeventcallback.OttoIBus;
 import com.squareup.otto.Bus;
 
 import javax.inject.Provider;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+
+import static com.byoutline.cachedfield.internal.DefaultExecutors.createDefaultStateListenerExecutor;
+import static com.byoutline.cachedfield.internal.DefaultExecutors.createDefaultValueGetterExecutor;
 
 /**
  * {@link CachedField} implementation that posts calculated result on Otto bus.
@@ -23,6 +25,8 @@ public class OttoCachedField<RETURN_TYPE> extends CachedFieldImpl<RETURN_TYPE> {
 
     public static Provider<String> defaultSessionIdProvider;
     public static Bus defaultBus;
+    static ExecutorService defaultValueGetterExecutor;
+    static Executor defaultStateListenerExecutor;
 
     public OttoCachedField(Provider<RETURN_TYPE> valueGetter, ResponseEvent<RETURN_TYPE> successEvent) {
         this(valueGetter, successEvent, null);
@@ -41,21 +45,27 @@ public class OttoCachedField<RETURN_TYPE> extends CachedFieldImpl<RETURN_TYPE> {
     }
 
     public OttoCachedField(Provider<String> sessionIdProvider, Provider<RETURN_TYPE> valueGetter, ResponseEvent<RETURN_TYPE> successEvent, Object errorEvent, Bus bus) {
-        this(sessionIdProvider, valueGetter, successEvent, ErrorEvent.genericEvent(errorEvent), bus);
+        this(sessionIdProvider, valueGetter, successEvent, ErrorEvent.genericEvent(errorEvent),
+                new OttoIBus(bus), createDefaultValueGetterExecutor(), createDefaultStateListenerExecutor());
     }
 
-    OttoCachedField(Provider<String> sessionIdProvider, Provider<RETURN_TYPE> valueGetter, ResponseEvent<RETURN_TYPE> successEvent, ErrorEvent errorEvent, Bus bus) {
+    OttoCachedField(Provider<String> sessionIdProvider, Provider<RETURN_TYPE> valueGetter,
+                    ResponseEvent<RETURN_TYPE> successEvent, ErrorEvent errorEvent, OttoIBus bus,
+                    ExecutorService valueGetterExecutor, Executor stateListenerExecutor) {
         this(sessionIdProvider,
                 valueGetter,
-                new OttoSuccessListener<RETURN_TYPE>(bus, successEvent),
-                new OttoErrorListener(bus, errorEvent),
-                bus);
+                new IBusSuccessListener<RETURN_TYPE>(bus, successEvent),
+                new IBusErrorListener(bus, errorEvent),
+                bus,
+                valueGetterExecutor,
+                stateListenerExecutor);
     }
 
     private OttoCachedField(Provider<String> sessionProvider,
                             Provider<RETURN_TYPE> valueGetter,
-                            SuccessListener<RETURN_TYPE> successHandler, ErrorListener errorHandler, Bus bus) {
-        super(sessionProvider, valueGetter, successHandler, errorHandler);
+                            SuccessListener<RETURN_TYPE> successHandler, ErrorListener errorHandler, OttoIBus bus,
+                            ExecutorService valueGetterExecutor, Executor stateListenerExecutor) {
+        super(sessionProvider, valueGetter, successHandler, errorHandler, valueGetterExecutor, stateListenerExecutor);
         bus.register(valueGetter);
     }
 
@@ -64,7 +74,16 @@ public class OttoCachedField<RETURN_TYPE> extends CachedFieldImpl<RETURN_TYPE> {
     }
 
     public static void init(Provider<String> defaultSessionIdProvider, Bus defaultBus) {
+        init(defaultSessionIdProvider, defaultBus,
+                createDefaultValueGetterExecutor(),
+                createDefaultStateListenerExecutor());
+    }
+
+    public static void init(Provider<String> defaultSessionIdProvider, Bus defaultBus,
+                            ExecutorService defaultValueGetterExecutor, Executor defaultStateListenerExecutor) {
         OttoCachedField.defaultSessionIdProvider = defaultSessionIdProvider;
         OttoCachedField.defaultBus = defaultBus;
+        OttoCachedField.defaultValueGetterExecutor = defaultValueGetterExecutor;
+        OttoCachedField.defaultStateListenerExecutor = defaultStateListenerExecutor;
     }
 }

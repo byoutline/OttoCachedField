@@ -22,7 +22,7 @@ class OttoCachedFieldWithArgSpec extends spock.lang.Specification {
     ResponseEventWithArg<Exception, Integer> errorEvent
     Bus bus
 
-    static void postAndWaitUntilFieldStopsLoading(CachedFieldWithArg field, int arg) {
+    static <ARG_TYPE> void postAndWaitUntilFieldStopsLoading(CachedFieldWithArg<?, ARG_TYPE> field, ARG_TYPE arg) {
         boolean duringValueLoad = true
         def listener = { FieldState newState ->
             if (newState == FieldState.NOT_LOADED || newState == FieldState.LOADED) {

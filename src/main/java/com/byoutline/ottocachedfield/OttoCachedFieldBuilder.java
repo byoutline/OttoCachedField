@@ -1,10 +1,17 @@
 package com.byoutline.ottocachedfield;
 
+import com.byoutline.cachedfield.ProviderWithArg;
+import com.byoutline.cachedfield.dbcache.DbCachedValueProvider;
+import com.byoutline.cachedfield.dbcache.DbWriter;
+import com.byoutline.cachedfield.dbcache.FetchType;
 import com.byoutline.eventcallback.ResponseEvent;
-import com.byoutline.ottocachedfield.internal.ErrorEvent;
+import com.byoutline.ibuscachedfield.internal.ErrorEvent;
+import com.byoutline.ottoeventcallback.OttoIBus;
 import com.squareup.otto.Bus;
 
 import javax.inject.Provider;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 
 /**
  * Fluent interface builder of {@link OttoCachedField}. If you do not like
@@ -20,15 +27,52 @@ public class OttoCachedFieldBuilder<RETURN_TYPE> {
     private ErrorEvent errorEvent;
     private Provider<String> sessionIdProvider;
     private Bus bus;
+    private ExecutorService valueGetterExecutor;
+    private Executor stateListenerExecutor;
 
     public OttoCachedFieldBuilder() {
         bus = OttoCachedField.defaultBus;
         sessionIdProvider = OttoCachedField.defaultSessionIdProvider;
+        valueGetterExecutor = OttoCachedField.defaultValueGetterExecutor;
+        stateListenerExecutor = OttoCachedField.defaultStateListenerExecutor;
     }
 
     public SuccessEvent withValueProvider(Provider<RETURN_TYPE> valueProvider) {
         this.valueGetter = valueProvider;
         return new SuccessEvent();
+    }
+
+    public <API_RETURN_TYPE> DbCacheBuilderReader<API_RETURN_TYPE, RETURN_TYPE> withApiFetcher(Provider<API_RETURN_TYPE> apiValueProvider) {
+        return new DbCacheBuilderReader<API_RETURN_TYPE, RETURN_TYPE>(apiValueProvider);
+    }
+
+    public static class DbCacheBuilderReader<API_RETURN_TYPE, RETURN_TYPE> {
+        private final Provider<API_RETURN_TYPE> apiValueProvider;
+
+        public DbCacheBuilderReader(Provider<API_RETURN_TYPE> apiValueProvider) {
+            this.apiValueProvider = apiValueProvider;
+        }
+
+        public <API_RETURN_TYPE> DbCacheBuilderWriter<API_RETURN_TYPE, RETURN_TYPE> withDbWriter(DbWriter<API_RETURN_TYPE> dbSaver) {
+            return new DbCacheBuilderWriter(apiValueProvider, dbSaver);
+        }
+    }
+
+    public static class DbCacheBuilderWriter<API_RETURN_TYPE, RETURN_TYPE> {
+        private final Provider<API_RETURN_TYPE> apiValueProvider;
+        private final DbWriter<API_RETURN_TYPE> dbSaver;
+
+        public DbCacheBuilderWriter(Provider<API_RETURN_TYPE> apiValueProvider, DbWriter<API_RETURN_TYPE> dbSaver) {
+            this.apiValueProvider = apiValueProvider;
+            this.dbSaver = dbSaver;
+        }
+
+        public OttoCachedFieldWithArgBuilder.SuccessEvent withDbReader(Provider<RETURN_TYPE> dbValueProvider) {
+            ProviderWithArg<RETURN_TYPE, FetchType> valueProvider =
+                    new DbCachedValueProvider<API_RETURN_TYPE, RETURN_TYPE>(apiValueProvider, dbSaver, dbValueProvider);
+            return new OttoCachedFieldWithArgBuilder<RETURN_TYPE, FetchType>()
+                    .withValueProvider(valueProvider);
+        }
     }
 
     public class SuccessEvent {
@@ -47,14 +91,14 @@ public class OttoCachedFieldBuilder<RETURN_TYPE> {
         private ErrorEventSetter() {
         }
 
-        public CustomSessionIdProvider withGenericErrorEvent(Object errorEvent) {
+        public OverrideDefaultsSetter withGenericErrorEvent(Object errorEvent) {
             OttoCachedFieldBuilder.this.errorEvent = ErrorEvent.genericEvent(errorEvent);
-            return new CustomSessionIdProvider();
+            return new OverrideDefaultsSetter();
         }
 
-        public CustomSessionIdProvider withResponseErrorEvent(ResponseEvent<Exception> errorEvent) {
+        public OverrideDefaultsSetter withResponseErrorEvent(ResponseEvent<Exception> errorEvent) {
             OttoCachedFieldBuilder.this.errorEvent = ErrorEvent.responseEvent(errorEvent);
-            return new CustomSessionIdProvider();
+            return new OverrideDefaultsSetter();
         }
 
         public OttoCachedField<RETURN_TYPE> build() {
@@ -63,29 +107,29 @@ public class OttoCachedFieldBuilder<RETURN_TYPE> {
         }
     }
 
-    public class CustomSessionIdProvider {
+    public class OverrideDefaultsSetter {
 
-        private CustomSessionIdProvider() {
+        private OverrideDefaultsSetter() {
         }
 
-        public CustomBus withCustomSessionIdProvider(Provider<String> sessionIdProvider) {
+        public OverrideDefaultsSetter withCustomSessionIdProvider(Provider<String> sessionIdProvider) {
             OttoCachedFieldBuilder.this.sessionIdProvider = sessionIdProvider;
-            return new CustomBus();
+            return this;
         }
 
-        public OttoCachedField<RETURN_TYPE> build() {
-            return OttoCachedFieldBuilder.this.build();
-        }
-    }
-
-    public class CustomBus {
-
-        private CustomBus() {
-        }
-
-        public Builder withCustomBus(Bus bus) {
+        public OverrideDefaultsSetter withCustomBus(Bus bus) {
             OttoCachedFieldBuilder.this.bus = bus;
-            return new Builder();
+            return this;
+        }
+
+        public OverrideDefaultsSetter withCustomValueGetterExecutor(ExecutorService valueGetterExecutor) {
+            OttoCachedFieldBuilder.this.valueGetterExecutor = valueGetterExecutor;
+            return this;
+        }
+
+        public OverrideDefaultsSetter withCustomStateListenerExecutor(Executor stateListenerExecutor) {
+            OttoCachedFieldBuilder.this.stateListenerExecutor = stateListenerExecutor;
+            return this;
         }
 
         public OttoCachedField<RETURN_TYPE> build() {
@@ -104,6 +148,7 @@ public class OttoCachedFieldBuilder<RETURN_TYPE> {
     }
 
     private OttoCachedField<RETURN_TYPE> build() {
-        return new OttoCachedField<RETURN_TYPE>(sessionIdProvider, valueGetter, successEvent, errorEvent, bus);
+        return new OttoCachedField<RETURN_TYPE>(sessionIdProvider, valueGetter, successEvent, errorEvent, new OttoIBus(bus),
+                valueGetterExecutor, stateListenerExecutor);
     }
 }
