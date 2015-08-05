@@ -32,4 +32,7 @@ public class OttoCachedEndpointWithArg<RETURN_TYPE, ARG_TYPE> extends CachedEndp
                 valueGetterExecutor, stateListenerExecutor);
     }
 
+    public static <RETURN_TYPE, ARG_TYPE> OttoCachedEndpointWithArgBuilder<RETURN_TYPE, ARG_TYPE> builder() {
+        return new OttoCachedEndpointWithArgBuilder<RETURN_TYPE, ARG_TYPE>();
+    }
 }
