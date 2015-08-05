@@ -13,11 +13,12 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 
 /**
- * Apache License 2.0
+ * {@link OttoCachedField} like API for making non GET calls.
  *
- * @param <RETURN_TYPE>
- * @param <ARG_TYPE>
- * @author Sebastian Kacprzak <nait at naitbit.com>
+ * @see <a href="https://github.com/byoutline/CachedField#cachedendpoint">https://github.com/byoutline/CachedField#cachedendpoint</a>
+ * @param <RETURN_TYPE> Type of value returned by endpoint on success.
+ * @param <ARG_TYPE>    Type of argument that needs to be passed to make a call.
+ * @author Sebastian Kacprzak <sebastian.kacprzak at byoutline.com>
  */
 public class OttoCachedEndpointWithArg<RETURN_TYPE, ARG_TYPE> extends CachedEndpointWithArgImpl<RETURN_TYPE, ARG_TYPE> {
 
