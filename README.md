@@ -118,6 +118,7 @@ Not an Otto bus user?
 If you do not want to use Otto bus check [CachedField](https://github.com/byoutline/CachedField) project.
 
 #### Latest changes ####
+* 1.5.0 Added OttoCachedEndpoint to allow using CachedField like API for non GET calls ([read more](https://github.com/byoutline/CachedField#cachedendpoint))
 * 1.4.0 
   * Added support for providing custom ```ExecutorService```/```Executor``` for value loading and state listener calls
   * Added DB Cache utils - You can use ```withApiFetcher```, ```withDbWriter```, ```withDbReader``` methods in builders to combine
