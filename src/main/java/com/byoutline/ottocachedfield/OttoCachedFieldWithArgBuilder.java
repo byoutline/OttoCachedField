@@ -25,7 +25,7 @@ import java.util.concurrent.ExecutorService;
 public class OttoCachedFieldWithArgBuilder<RETURN_TYPE, ARG_TYPE> extends IBusCachedFieldWithArgBuilder<RETURN_TYPE, ARG_TYPE, Bus> {
 
     public OttoCachedFieldWithArgBuilder() {
-        super(new ConstructorWrapper<>(),
+        super(new ConstructorWrapper<RETURN_TYPE, ARG_TYPE>(),
                 OttoCachedField.defaultBus,
                 OttoCachedField.defaultSessionIdProvider,
                 OttoCachedField.defaultValueGetterExecutor,
