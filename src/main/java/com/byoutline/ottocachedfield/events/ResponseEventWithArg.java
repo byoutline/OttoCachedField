@@ -2,7 +2,7 @@ package com.byoutline.ottocachedfield.events;
 
 /**
  * Moved to {@link com.byoutline.ibuscachedfield.events.ResponseEventWithArg}.
- * This copy was kept only for backward compatibility.
+ * This class is a copy that was kept only for backward compatibility.
  *
  * @param <RETURN_TYPE> Type of returned value
  * @param <ARG_TYPE>    Type of argument required to get response
