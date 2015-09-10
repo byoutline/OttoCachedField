@@ -22,7 +22,7 @@ import java.util.concurrent.ExecutorService;
  */
 public class OttoCachedEndpointWithArg<RETURN_TYPE, ARG_TYPE> extends CachedEndpointWithArgImpl<RETURN_TYPE, ARG_TYPE> {
 
-    OttoCachedEndpointWithArg(@Nonnull Provider<String> sessionProvider,
+    protected OttoCachedEndpointWithArg(@Nonnull Provider<String> sessionProvider,
                               @Nonnull ProviderWithArg<RETURN_TYPE, ARG_TYPE> valueGetter,
                               @Nonnull ResponseEventWithArg<StateAndValue<RETURN_TYPE, ARG_TYPE>, ARG_TYPE> event,
                               @Nonnull IBus bus,
