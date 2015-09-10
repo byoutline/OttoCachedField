@@ -20,7 +20,7 @@ apply from: 'gradle/byoutline/javaLib.gradle'
 repositories {
     mavenCentral()
     // For snapshots of event callback and spock testing
-    maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
+//    maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
 }
 
 dependencies {
