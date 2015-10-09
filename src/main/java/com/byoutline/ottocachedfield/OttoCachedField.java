@@ -1,6 +1,9 @@
 package com.byoutline.ottocachedfield;
 
-import com.byoutline.cachedfield.*;
+import com.byoutline.cachedfield.CachedField;
+import com.byoutline.cachedfield.CachedFieldImpl;
+import com.byoutline.cachedfield.ErrorListener;
+import com.byoutline.cachedfield.SuccessListener;
 import com.byoutline.eventcallback.ResponseEvent;
 import com.byoutline.ibuscachedfield.internal.ErrorEvent;
 import com.byoutline.ibuscachedfield.internal.IBusErrorListener;
@@ -40,7 +43,7 @@ public class OttoCachedField<RETURN_TYPE> extends CachedFieldImpl<RETURN_TYPE> {
         this(defaultSessionIdProvider, valueGetter, successEvent, errorEvent, defaultBus);
     }
 
-    public OttoCachedField(Provider<String> sessionIdProvider, Provider<RETURN_TYPE> valueGetter, ResponseEvent<RETURN_TYPE> successEvent, ResponseEvent<Exception> errorEvent, FieldStateListener fieldStateListener, Bus bus) {
+    public OttoCachedField(Provider<String> sessionIdProvider, Provider<RETURN_TYPE> valueGetter, ResponseEvent<RETURN_TYPE> successEvent, ResponseEvent<Exception> errorEvent, Bus bus) {
         this(sessionIdProvider, valueGetter, successEvent, ErrorEvent.responseEvent(errorEvent), bus);
     }
 
