@@ -18,9 +18,20 @@ buildscript {
 apply from: 'gradle/byoutline/javaLib.gradle'
 
 repositories {
-    mavenCentral()
+//    mavenCentral()
+    maven { url "https://jcenter.bintray.com/" }
     // For snapshots of event callback and spock testing
 //    maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
+configurations {
+    provided
+}
+
+sourceSets {
+    main {
+        compileClasspath += configurations.provided
+    }
 }
 
 dependencies {
@@ -31,6 +42,7 @@ dependencies {
     compile 'com.squareup:otto:1.3.5'
     compile 'com.byoutline.ibuscachedfield:ibuscachedfield:1.0.0'
     compile 'com.byoutline.cachedfield:cachedfield:1.5.0'
+    provided 'com.android.databinding:baseLibrary:1.0-rc2'
     testCompile 'com.google.guava:guava:18.0'
 }
 
