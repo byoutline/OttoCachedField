@@ -10,11 +10,14 @@ import spock.lang.Unroll
 
 import javax.inject.Provider
 
+import static com.byoutline.ottocachedfield.MockFactory.obsWithArgBuilder
+import static com.byoutline.ottocachedfield.MockFactory.ottoWithArgBuilder
+
 /**
  *
  * @author Sebastian Kacprzak <sebastian.kacprzak at byoutline.com> on 27.06.14.
  */
-class OttoCachedFieldWithArgSpec extends spock.lang.Specification {
+class PostingToBusCachedFieldWithArgSpec extends spock.lang.Specification {
     @Shared
     Map<Integer, String> argToValueMap = [1: 'a', 2: 'b']
     @Shared
@@ -47,9 +50,9 @@ class OttoCachedFieldWithArgSpec extends spock.lang.Specification {
     }
 
     @Unroll
-    def "should post value: #val , times: #sC for arg: #arg"() {
+    def "should post value: #val #text, times: #sC for arg: #arg when created by: #builder.class.simpleName"() {
         given:
-        OttoCachedFieldWithArg field = OttoCachedFieldWithArg.builder()
+        CachedFieldWithArg field = builder
                 .withValueProvider(MockFactory.getStringGetter(argToValueMap))
                 .withSuccessEvent(successEvent)
                 .withResponseErrorEvent(errorEvent)
@@ -63,13 +66,17 @@ class OttoCachedFieldWithArgSpec extends spock.lang.Specification {
         0 * errorEvent.setResponse(_, _)
 
         where:
-        val  | arg | sC
-        null | 0   | 1
-        'a'  | 1   | 1
-        'b'  | 2   | 1
+        val  | arg | builder              || sC
+        null | 0   | ottoWithArgBuilder() || 1
+        null | 0   | obsWithArgBuilder()  || 1
+        'a'  | 1   | ottoWithArgBuilder() || 1
+        'a'  | 1   | obsWithArgBuilder()  || 1
+        'b'  | 2   | ottoWithArgBuilder() || 1
+        'b'  | 2   | obsWithArgBuilder()  || 1
     }
 
-    def "postValue should post error with argument"() {
+    @Unroll
+    def "postValue should post error with argument when created by: #builder.class.simpleName"() {
         given:
         Exception errorVal = null;
         Integer errorArg = null;
@@ -77,7 +84,7 @@ class OttoCachedFieldWithArgSpec extends spock.lang.Specification {
                 { Exception val, Integer arg ->
                     errorVal = val; errorArg = arg
                 } as ResponseEventWithArg<Exception, Integer>
-        OttoCachedFieldWithArg field = OttoCachedFieldWithArg.builder()
+        CachedFieldWithArg field = builder
                 .withValueProvider(MockFactory.getFailingStringGetterWithArg())
                 .withSuccessEvent(successEvent)
                 .withResponseErrorEvent(errorEvent)
@@ -88,9 +95,13 @@ class OttoCachedFieldWithArgSpec extends spock.lang.Specification {
         then:
         errorVal.message == "E2"
         errorArg == 2
+
+        where:
+        builder << MockFactory.busCachedFieldsWithArgBuilders()
     }
 
-    def "when custom bus passed to builder it should be used instead of default"() {
+    @Unroll
+    def "custom bus passed to builder should be used instead of default when created by: #builder.class.simpleName"() {
         given:
         def sessionProv = { return "custom" } as Provider<String>
         Bus customBus = Mock()
@@ -108,5 +119,8 @@ class OttoCachedFieldWithArgSpec extends spock.lang.Specification {
         then:
         1 * customBus.post(_)
         0 * bus.post(_)
+
+        where:
+        builder << MockFactory.busCachedFieldsWithArgBuilders()
     }
 }

@@ -1,4 +1,4 @@
-package com.byoutline.ottocachedfield.observablecachedfield;
+package com.byoutline.ottocachedfield;
 
 import com.byoutline.cachedfield.CachedFieldWithArgImpl;
 import com.byoutline.cachedfield.ErrorListenerWithArg;
@@ -15,13 +15,9 @@ import java.util.concurrent.ExecutorService;
  */
 public class ObservableCachedFieldWithArg<RETURN_TYPE, ARG_TYPE>
         extends CachedFieldWithArgImpl<RETURN_TYPE, ARG_TYPE> {
-    // TODO: move
-    static Provider<String> defaultSessionIdProvider;
-    static ExecutorService defaultValueGetterExecutor;
-    static Executor defaultStateListenerExecutor;
     private final ObservableField<RETURN_TYPE> observableValue;
 
-    public ObservableCachedFieldWithArg(Provider<String> sessionIdProvider,
+    protected ObservableCachedFieldWithArg(Provider<String> sessionIdProvider,
                                  ProviderWithArg<RETURN_TYPE, ARG_TYPE> valueGetter,
                                         SuccessListenerWithArg<RETURN_TYPE, ARG_TYPE> additionalSuccessListener,
                                         ErrorListenerWithArg<ARG_TYPE> additionalErrorListener,
@@ -60,15 +56,11 @@ public class ObservableCachedFieldWithArg<RETURN_TYPE, ARG_TYPE>
         this.observableValue = observableValue;
     }
 
-    public ObservableField<RETURN_TYPE> observable() {
-        return observableValue;
+    public static <RETURN_TYPE, ARG_TYPE> ObservableCachedFieldWithArgBuilder<RETURN_TYPE, ARG_TYPE> builder() {
+        return new ObservableCachedFieldWithArgBuilder<RETURN_TYPE, ARG_TYPE>();
     }
 
-    static void init(Provider<String> defaultSessionIdProvider,
-                     ExecutorService defaultValueGetterExecutor, Executor defaultStateListenerExecutor) {
-        // TODO: move
-        ObservableCachedFieldWithArg.defaultSessionIdProvider = defaultSessionIdProvider;
-        ObservableCachedFieldWithArg.defaultValueGetterExecutor = defaultValueGetterExecutor;
-        ObservableCachedFieldWithArg.defaultStateListenerExecutor = defaultStateListenerExecutor;
+    public ObservableField<RETURN_TYPE> observable() {
+        return observableValue;
     }
 }

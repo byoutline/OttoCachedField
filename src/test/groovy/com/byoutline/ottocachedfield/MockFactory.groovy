@@ -1,6 +1,8 @@
 package com.byoutline.ottocachedfield
 
 import com.byoutline.cachedfield.ProviderWithArg
+import com.byoutline.ibuscachedfield.IBusCachedFieldWithArgBuilder
+import com.squareup.otto.Bus
 
 import javax.inject.Provider
 
@@ -41,4 +43,16 @@ static Provider<String> getFailingStringGetter(Exception ex) {
 static ProviderWithArg<String, Integer> getFailingStringGetterWithArg() {
     return [get     : { Integer arg -> throw new RuntimeException("E" + arg) },
             toString: { "fail provider with arg" }] as ProviderWithArg<String, Integer>
+}
+
+static IBusCachedFieldWithArgBuilder<String, Integer, Bus> obsWithArgBuilder() {
+    ObservableCachedFieldWithArg.builder()
+}
+
+static IBusCachedFieldWithArgBuilder<String, Integer, Bus> ottoWithArgBuilder() {
+    OttoCachedFieldWithArg.builder()
+}
+
+static List<IBusCachedFieldWithArgBuilder<String, Integer, Bus>> busCachedFieldsWithArgBuilders() {
+    [ottoWithArgBuilder(), obsWithArgBuilder()]
 }

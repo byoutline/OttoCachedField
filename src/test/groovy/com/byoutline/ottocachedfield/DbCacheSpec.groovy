@@ -50,7 +50,7 @@ class DbCacheSpec extends spock.lang.Specification {
                 .build();
 
         when:
-        OttoCachedFieldWithArgSpec.postAndWaitUntilFieldStopsLoading(field, FetchType.API)
+        PostingToBusCachedFieldWithArgSpec.postAndWaitUntilFieldStopsLoading(field, FetchType.API)
 
         then:
         value == successEvent.getResponse()
@@ -75,7 +75,7 @@ class DbCacheSpec extends spock.lang.Specification {
                 .build();
 
         when:
-        OttoCachedFieldWithArgSpec.postAndWaitUntilFieldStopsLoading(field, DbCacheArg.create(1, FetchType.API))
+        PostingToBusCachedFieldWithArgSpec.postAndWaitUntilFieldStopsLoading(field, DbCacheArg.create(1, FetchType.API))
 
         then:
         'a' == successEventWithArg.getResponse()
@@ -94,7 +94,7 @@ class DbCacheSpec extends spock.lang.Specification {
                 .build();
 
         when:
-        OttoCachedFieldWithArgSpec.postAndWaitUntilFieldStopsLoading(field, FetchType.DB)
+        PostingToBusCachedFieldWithArgSpec.postAndWaitUntilFieldStopsLoading(field, FetchType.DB)
 
         then:
         differentValue == successEvent.getResponse()
@@ -113,7 +113,7 @@ class DbCacheSpec extends spock.lang.Specification {
                 .build();
 
         when:
-        OttoCachedFieldWithArgSpec.postAndWaitUntilFieldStopsLoading(field, FetchType.API)
+        PostingToBusCachedFieldWithArgSpec.postAndWaitUntilFieldStopsLoading(field, FetchType.API)
 
         then:
         event.getResponse() == 1
