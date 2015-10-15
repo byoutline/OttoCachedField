@@ -96,4 +96,9 @@ public class ObservableCachedFieldWithArgBuilder<RETURN_TYPE, ARG_TYPE>
             return supperSuccessEventSetter.withSuccessEvent(event).withResponseErrorEvent(null);
         }
     }
+
+    @Override
+    protected ObservableCachedFieldWithArg<RETURN_TYPE, ARG_TYPE> build() {
+        return (ObservableCachedFieldWithArg<RETURN_TYPE, ARG_TYPE>) super.build();
+    }
 }

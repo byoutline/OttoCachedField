@@ -4,7 +4,7 @@ import com.byoutline.cachedfield.CachedFieldWithArgImpl;
 import com.byoutline.cachedfield.ErrorListenerWithArg;
 import com.byoutline.cachedfield.ProviderWithArg;
 import com.byoutline.cachedfield.SuccessListenerWithArg;
-import com.byoutline.shadow.android.databinding.ObservableField;
+import com.byoutline.shadow.ObservableField;
 
 import javax.inject.Provider;
 import java.util.concurrent.Executor;
