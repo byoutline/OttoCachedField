@@ -1,4 +1,6 @@
-package com.byoutline.shadow.android.databinding;
+package com.byoutline.shadow;
+
+import com.byoutline.shadow.android.databinding.BaseObservable;
 
 import java.io.Serializable;
 
