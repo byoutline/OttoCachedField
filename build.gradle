@@ -51,7 +51,7 @@ dependencies {
 jacocoTestReport {
     afterEvaluate {
         classDirectories = files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: 'src/main/java/com/byoutline/shadow/**')
+            fileTree(dir: it, exclude: 'com/byoutline/shadow/**')
         })
     }
 }
