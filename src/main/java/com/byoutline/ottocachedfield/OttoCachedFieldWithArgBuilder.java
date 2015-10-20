@@ -22,7 +22,8 @@ import java.util.concurrent.ExecutorService;
  * @param <ARG_TYPE>    Type of argument that needs to be passed to calculate value.
  * @author Sebastian Kacprzak <sebastian.kacprzak at byoutline.com>
  */
-public class OttoCachedFieldWithArgBuilder<RETURN_TYPE, ARG_TYPE> extends IBusCachedFieldWithArgBuilder<RETURN_TYPE, ARG_TYPE, Bus> {
+public class OttoCachedFieldWithArgBuilder<RETURN_TYPE, ARG_TYPE>
+        extends IBusCachedFieldWithArgBuilder<RETURN_TYPE, ARG_TYPE, Bus, CachedFieldWithArg<RETURN_TYPE, ARG_TYPE>> {
 
     public OttoCachedFieldWithArgBuilder() {
         super(new ConstructorWrapper<RETURN_TYPE, ARG_TYPE>(),
@@ -64,7 +65,8 @@ public class OttoCachedFieldWithArgBuilder<RETURN_TYPE, ARG_TYPE> extends IBusCa
         }
     }
 
-    private static class ConstructorWrapper<RETURN_TYPE, ARG_TYPE> implements CachedFieldWithArgConstructorWrapper<RETURN_TYPE, ARG_TYPE, Bus> {
+    private static class ConstructorWrapper<RETURN_TYPE, ARG_TYPE>
+            implements CachedFieldWithArgConstructorWrapper<RETURN_TYPE, ARG_TYPE, Bus, CachedFieldWithArg<RETURN_TYPE, ARG_TYPE>> {
 
         @Override
         public CachedFieldWithArg<RETURN_TYPE, ARG_TYPE> build(Provider<String> sessionIdProvider, ProviderWithArg<RETURN_TYPE, ARG_TYPE> valueGetter, ResponseEventWithArg<RETURN_TYPE, ARG_TYPE> successEvent, ResponseEventWithArg<Exception, ARG_TYPE> errorEvent, Bus bus, ExecutorService valueGetterExecutor, Executor stateListenerExecutor) {

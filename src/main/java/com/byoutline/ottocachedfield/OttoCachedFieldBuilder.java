@@ -23,7 +23,7 @@ import java.util.concurrent.ExecutorService;
  * @param <RETURN_TYPE> Type of object to be cached.
  * @author Sebastian Kacprzak <sebastian.kacprzak at byoutline.com>
  */
-public class OttoCachedFieldBuilder<RETURN_TYPE> extends IBusCachedFieldBuilder<RETURN_TYPE, Bus> {
+public class OttoCachedFieldBuilder<RETURN_TYPE> extends IBusCachedFieldBuilder<RETURN_TYPE, Bus, CachedField<RETURN_TYPE>> {
 
     public OttoCachedFieldBuilder() {
         super(new ConstructorWrapper<RETURN_TYPE>(),
@@ -66,7 +66,7 @@ public class OttoCachedFieldBuilder<RETURN_TYPE> extends IBusCachedFieldBuilder<
         }
     }
 
-    private static class ConstructorWrapper<RETURN_TYPE> implements CachedFieldConstructorWrapper<RETURN_TYPE, Bus> {
+    private static class ConstructorWrapper<RETURN_TYPE> implements CachedFieldConstructorWrapper<RETURN_TYPE, Bus, CachedField<RETURN_TYPE>> {
         @Override
         public CachedField<RETURN_TYPE> build(Provider<String> sessionIdProvider,
                                               Provider<RETURN_TYPE> valueGetter,

@@ -4,7 +4,7 @@ import com.byoutline.cachedfield.ProviderWithArg;
 import com.byoutline.cachedfield.cachedendpoint.CachedEndpointWithArg;
 import com.byoutline.cachedfield.cachedendpoint.StateAndValue;
 import com.byoutline.ibuscachedfield.IBusCachedEndpointWithArgBuilder;
-import com.byoutline.ibuscachedfield.builders.CachedEndpointWithArgConstructorWrapperBuilder;
+import com.byoutline.ibuscachedfield.builders.CachedEndpointWithArgConstructorWrapper;
 import com.byoutline.ibuscachedfield.events.ResponseEventWithArg;
 import com.byoutline.ottoeventcallback.OttoIBus;
 import com.squareup.otto.Bus;
@@ -17,7 +17,7 @@ import java.util.concurrent.ExecutorService;
  * Fluent interface for building instances of {@link OttoCachedEndpointWithArg}.
  */
 public class OttoCachedEndpointWithArgBuilder<RETURN_TYPE, ARG_TYPE>
-        extends IBusCachedEndpointWithArgBuilder<RETURN_TYPE, ARG_TYPE, Bus> {
+        extends IBusCachedEndpointWithArgBuilder<RETURN_TYPE, ARG_TYPE, Bus, CachedEndpointWithArg<RETURN_TYPE, ARG_TYPE>> {
 
     protected OttoCachedEndpointWithArgBuilder() {
         super(new ConstructorWrapper<RETURN_TYPE, ARG_TYPE>(), OttoCachedField.defaultBus,
@@ -26,7 +26,8 @@ public class OttoCachedEndpointWithArgBuilder<RETURN_TYPE, ARG_TYPE>
                 OttoCachedField.defaultStateListenerExecutor);
     }
 
-    private static class ConstructorWrapper<RETURN_TYPE, ARG_TYPE> implements CachedEndpointWithArgConstructorWrapperBuilder<RETURN_TYPE, ARG_TYPE, Bus> {
+    private static class ConstructorWrapper<RETURN_TYPE, ARG_TYPE>
+            implements CachedEndpointWithArgConstructorWrapper<RETURN_TYPE, ARG_TYPE, Bus, CachedEndpointWithArg<RETURN_TYPE, ARG_TYPE>> {
         @Override
         public CachedEndpointWithArg<RETURN_TYPE, ARG_TYPE> build(Provider<String> sessionIdProvider,
                                                                   ProviderWithArg<RETURN_TYPE, ARG_TYPE> valueGetter,

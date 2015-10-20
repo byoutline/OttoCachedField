@@ -1,6 +1,5 @@
 package com.byoutline.ottocachedfield;
 
-import com.byoutline.cachedfield.CachedFieldWithArg;
 import com.byoutline.cachedfield.ErrorListenerWithArg;
 import com.byoutline.cachedfield.ProviderWithArg;
 import com.byoutline.cachedfield.SuccessListenerWithArg;
@@ -11,8 +10,8 @@ import com.byoutline.ibuscachedfield.events.ResponseEventWithArg;
 import com.byoutline.ibuscachedfield.events.ResponseEventWithArgImpl;
 import com.byoutline.ibuscachedfield.internal.IBusErrorListenerWithArg;
 import com.byoutline.ibuscachedfield.internal.IBusSuccessListenerWithArg;
-import com.byoutline.ottocachedfield.internal.StubErrorListenerWithArg;
-import com.byoutline.ottocachedfield.internal.StubSuccessListenerWithArg;
+import com.byoutline.ibuscachedfield.internal.StubErrorListenerWithArg;
+import com.byoutline.ibuscachedfield.internal.StubSuccessListenerWithArg;
 import com.byoutline.ottoeventcallback.OttoIBus;
 import com.squareup.otto.Bus;
 
@@ -28,7 +27,7 @@ import java.util.concurrent.ExecutorService;
  * @author Sebastian Kacprzak <sebastian.kacprzak at byoutline.com>
  */
 public class ObservableCachedFieldWithArgBuilder<RETURN_TYPE, ARG_TYPE>
-        extends IBusCachedFieldWithArgBuilder<RETURN_TYPE, ARG_TYPE, Bus> {
+        extends IBusCachedFieldWithArgBuilder<RETURN_TYPE, ARG_TYPE, Bus, ObservableCachedFieldWithArg<RETURN_TYPE, ARG_TYPE>> {
     protected ObservableCachedFieldWithArgBuilder() {
         super(new ConstructorWrapper<RETURN_TYPE, ARG_TYPE>(),
                 OttoCachedField.defaultBus,
@@ -37,9 +36,9 @@ public class ObservableCachedFieldWithArgBuilder<RETURN_TYPE, ARG_TYPE>
                 OttoCachedField.defaultStateListenerExecutor);
     }
 
-    private static class ConstructorWrapper<RETURN_TYPE, ARG_TYPE> implements CachedFieldWithArgConstructorWrapper<RETURN_TYPE, ARG_TYPE, Bus> {
+    private static class ConstructorWrapper<RETURN_TYPE, ARG_TYPE> implements CachedFieldWithArgConstructorWrapper<RETURN_TYPE, ARG_TYPE, Bus, ObservableCachedFieldWithArg<RETURN_TYPE, ARG_TYPE>> {
         @Override
-        public CachedFieldWithArg<RETURN_TYPE, ARG_TYPE> build(Provider<String> sessionIdProvider,
+        public ObservableCachedFieldWithArg<RETURN_TYPE, ARG_TYPE> build(Provider<String> sessionIdProvider,
                                                                ProviderWithArg<RETURN_TYPE, ARG_TYPE> valueGetter,
                                                                ResponseEventWithArg<RETURN_TYPE, ARG_TYPE> successEvent,
                                                                ResponseEventWithArg<Exception, ARG_TYPE> errorEvent,
@@ -95,10 +94,5 @@ public class ObservableCachedFieldWithArgBuilder<RETURN_TYPE, ARG_TYPE>
             NoEvents<RETURN_TYPE, ARG_TYPE> event = new NoEvents<RETURN_TYPE, ARG_TYPE>();
             return supperSuccessEventSetter.withSuccessEvent(event).withResponseErrorEvent(null);
         }
-    }
-
-    @Override
-    protected ObservableCachedFieldWithArg<RETURN_TYPE, ARG_TYPE> build() {
-        return (ObservableCachedFieldWithArg<RETURN_TYPE, ARG_TYPE>) super.build();
     }
 }

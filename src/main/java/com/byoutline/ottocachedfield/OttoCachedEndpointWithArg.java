@@ -5,7 +5,7 @@ import com.byoutline.cachedfield.cachedendpoint.CachedEndpointWithArgImpl;
 import com.byoutline.cachedfield.cachedendpoint.StateAndValue;
 import com.byoutline.eventcallback.IBus;
 import com.byoutline.ibuscachedfield.events.ResponseEventWithArg;
-import com.byoutline.ottocachedfield.internal.BusCallEndListener;
+import com.byoutline.ibuscachedfield.internal.BusCallEndListener;
 
 import javax.annotation.Nonnull;
 import javax.inject.Provider;
