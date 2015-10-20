@@ -8,7 +8,7 @@ import com.byoutline.cachedfield.dbcache.DbWriterWithArg;
 import com.byoutline.ibuscachedfield.IBusCachedFieldWithArgBuilder;
 import com.byoutline.ibuscachedfield.builders.CachedFieldWithArgConstructorWrapper;
 import com.byoutline.ibuscachedfield.events.ResponseEventWithArg;
-import com.byoutline.ottocachedfield.internal.ExceptionMsg;
+import com.byoutline.ottocachedfield.internal.NullArgumentException;
 import com.byoutline.ottoeventcallback.OttoIBus;
 import com.squareup.otto.Bus;
 
@@ -71,8 +71,8 @@ public class OttoCachedFieldWithArgBuilder<RETURN_TYPE, ARG_TYPE>
 
         @Override
         public CachedFieldWithArg<RETURN_TYPE, ARG_TYPE> build(Provider<String> sessionIdProvider, ProviderWithArg<RETURN_TYPE, ARG_TYPE> valueGetter, ResponseEventWithArg<RETURN_TYPE, ARG_TYPE> successEvent, ResponseEventWithArg<Exception, ARG_TYPE> errorEvent, Bus bus, ExecutorService valueGetterExecutor, Executor stateListenerExecutor) {
-            if(stateListenerExecutor == null || valueGetter == null) {
-                throw new IllegalArgumentException(ExceptionMsg.NULL_EXECUTOR);
+            if (stateListenerExecutor == null || valueGetter == null) {
+                throw new NullArgumentException();
             }
             return new OttoCachedFieldWithArg<RETURN_TYPE, ARG_TYPE>(sessionIdProvider, valueGetter,
                     successEvent, errorEvent,

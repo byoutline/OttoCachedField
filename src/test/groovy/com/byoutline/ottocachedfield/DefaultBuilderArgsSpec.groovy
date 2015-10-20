@@ -4,7 +4,7 @@ import com.byoutline.eventcallback.ResponseEvent
 import com.byoutline.eventcallback.ResponseEventImpl
 import com.byoutline.ibuscachedfield.events.ResponseEventWithArg
 import com.byoutline.ibuscachedfield.events.ResponseEventWithArgImpl
-import com.byoutline.ottocachedfield.internal.ExceptionMsg
+import com.byoutline.ottocachedfield.internal.NullArgumentException
 import spock.lang.Shared
 import spock.lang.Unroll
 
@@ -23,7 +23,7 @@ class DefaultBuilderArgsSpec extends spock.lang.Specification {
     ResponseEventWithArg responseEventWithArg = new ResponseEventWithArgImpl()
 
     def setupSpec() {
-        OttoCachedField.init(null, null, null,null)
+        OttoCachedField.init(null, null, null, null)
     }
 
     @Unroll
@@ -32,21 +32,24 @@ class DefaultBuilderArgsSpec extends spock.lang.Specification {
         builder.build()
 
         then:
-        def e = thrown(IllegalArgumentException)
-        e.message == ExceptionMsg.NULL_EXECUTOR
+        thrown(NullArgumentException)
 
         where:
-        builder                                                                 | name
+        builder                                         | name
         OttoCachedField.builder()
                 .withValueProvider(MockFactory.getStringGetter(value))
-                .withSuccessEvent(responseEvent)                                | "OttoCachedField"
+                .withSuccessEvent(responseEvent)        | "OttoCachedField"
 
         OttoCachedFieldWithArg.builder()
                 .withValueProvider(MockFactory.getStringGetter(argToValueMap))
-                .withSuccessEvent(responseEventWithArg)                         | "OttoCachedFieldWithArg"
+                .withSuccessEvent(responseEventWithArg) | "OttoCachedFieldWithArg"
 
         OttoCachedEndpointWithArg.builder()
                 .withValueProvider(MockFactory.getStringGetter(argToValueMap))
-                .withResultEvent(responseEventWithArg)                          | "OttoCachedEndpointWithArg"
+                .withResultEvent(responseEventWithArg)  | "OttoCachedEndpointWithArg"
+
+        ObservableCachedFieldWithArg.builder()
+                .withValueProvider(MockFactory.getStringGetter(argToValueMap))
+                .withoutEvents()                        | "ObservableCachedFieldWithArg"
     }
 }

@@ -9,7 +9,7 @@ import com.byoutline.eventcallback.ResponseEvent;
 import com.byoutline.ibuscachedfield.IBusCachedFieldBuilder;
 import com.byoutline.ibuscachedfield.builders.CachedFieldConstructorWrapper;
 import com.byoutline.ibuscachedfield.internal.ErrorEvent;
-import com.byoutline.ottocachedfield.internal.ExceptionMsg;
+import com.byoutline.ottocachedfield.internal.NullArgumentException;
 import com.byoutline.ottoeventcallback.OttoIBus;
 import com.squareup.otto.Bus;
 
@@ -74,8 +74,8 @@ public class OttoCachedFieldBuilder<RETURN_TYPE> extends IBusCachedFieldBuilder<
                                               ResponseEvent<RETURN_TYPE> successEvent, ErrorEvent errorEvent,
                                               Bus bus,
                                               ExecutorService valueGetterExecutor, Executor stateListenerExecutor) {
-            if(stateListenerExecutor == null || valueGetter == null) {
-                throw new IllegalArgumentException(ExceptionMsg.NULL_EXECUTOR);
+            if (stateListenerExecutor == null || valueGetter == null) {
+                throw new NullArgumentException();
             }
             return new OttoCachedField<RETURN_TYPE>(sessionIdProvider, valueGetter,
                     successEvent, errorEvent,

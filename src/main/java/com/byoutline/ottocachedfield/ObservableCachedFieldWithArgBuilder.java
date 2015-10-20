@@ -12,7 +12,7 @@ import com.byoutline.ibuscachedfield.internal.IBusErrorListenerWithArg;
 import com.byoutline.ibuscachedfield.internal.IBusSuccessListenerWithArg;
 import com.byoutline.ibuscachedfield.internal.StubErrorListenerWithArg;
 import com.byoutline.ibuscachedfield.internal.StubSuccessListenerWithArg;
-import com.byoutline.ottocachedfield.internal.ExceptionMsg;
+import com.byoutline.ottocachedfield.internal.NullArgumentException;
 import com.byoutline.ottoeventcallback.OttoIBus;
 import com.squareup.otto.Bus;
 
@@ -40,14 +40,14 @@ public class ObservableCachedFieldWithArgBuilder<RETURN_TYPE, ARG_TYPE>
     private static class ConstructorWrapper<RETURN_TYPE, ARG_TYPE> implements CachedFieldWithArgConstructorWrapper<RETURN_TYPE, ARG_TYPE, Bus, ObservableCachedFieldWithArg<RETURN_TYPE, ARG_TYPE>> {
         @Override
         public ObservableCachedFieldWithArg<RETURN_TYPE, ARG_TYPE> build(Provider<String> sessionIdProvider,
-                                                               ProviderWithArg<RETURN_TYPE, ARG_TYPE> valueGetter,
-                                                               ResponseEventWithArg<RETURN_TYPE, ARG_TYPE> successEvent,
-                                                               ResponseEventWithArg<Exception, ARG_TYPE> errorEvent,
-                                                               Bus bus,
-                                                               ExecutorService valueGetterExecutor,
-                                                               Executor stateListenerExecutor) {
-            if(stateListenerExecutor == null || valueGetter == null) {
-                throw new IllegalArgumentException(ExceptionMsg.NULL_EXECUTOR);
+                                                                         ProviderWithArg<RETURN_TYPE, ARG_TYPE> valueGetter,
+                                                                         ResponseEventWithArg<RETURN_TYPE, ARG_TYPE> successEvent,
+                                                                         ResponseEventWithArg<Exception, ARG_TYPE> errorEvent,
+                                                                         Bus bus,
+                                                                         ExecutorService valueGetterExecutor,
+                                                                         Executor stateListenerExecutor) {
+            if (stateListenerExecutor == null || valueGetter == null) {
+                throw new NullArgumentException();
             }
             // If user did setup events use listeners that posts them,
             // otherwise use stub listeners that do nothing.

@@ -18,10 +18,10 @@ public class ObservableCachedFieldWithArg<RETURN_TYPE, ARG_TYPE>
     private final ObservableField<RETURN_TYPE> observableValue;
 
     protected ObservableCachedFieldWithArg(Provider<String> sessionIdProvider,
-                                 ProviderWithArg<RETURN_TYPE, ARG_TYPE> valueGetter,
-                                        SuccessListenerWithArg<RETURN_TYPE, ARG_TYPE> additionalSuccessListener,
-                                        ErrorListenerWithArg<ARG_TYPE> additionalErrorListener,
-                                 ExecutorService valueGetterExecutor, Executor stateListenerExecutor) {
+                                           ProviderWithArg<RETURN_TYPE, ARG_TYPE> valueGetter,
+                                           SuccessListenerWithArg<RETURN_TYPE, ARG_TYPE> additionalSuccessListener,
+                                           ErrorListenerWithArg<ARG_TYPE> additionalErrorListener,
+                                           ExecutorService valueGetterExecutor, Executor stateListenerExecutor) {
         this(sessionIdProvider, valueGetter,
                 additionalSuccessListener, additionalErrorListener,
                 valueGetterExecutor, stateListenerExecutor,
