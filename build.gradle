@@ -42,8 +42,8 @@ dependencies {
     compile 'com.squareup:otto:1.3.5'
     compile 'com.byoutline.ibuscachedfield:ibuscachedfield:1.0.3-SNAPSHOT'
     compile 'com.byoutline.cachedfield:cachedfield:1.5.0'
-    provided 'com.android.databinding:baseLibrary:1.0-rc2'
-    testCompile 'com.android.databinding:baseLibrary:1.0-rc2'
+    provided 'com.android.databinding:baseLibrary:1.0-rc4'
+    testCompile 'com.android.databinding:baseLibrary:1.0-rc4'
     testCompile 'com.google.guava:guava:18.0'
 }
 

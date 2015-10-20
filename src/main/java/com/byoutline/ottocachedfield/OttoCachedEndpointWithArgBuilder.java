@@ -6,6 +6,7 @@ import com.byoutline.cachedfield.cachedendpoint.StateAndValue;
 import com.byoutline.ibuscachedfield.IBusCachedEndpointWithArgBuilder;
 import com.byoutline.ibuscachedfield.builders.CachedEndpointWithArgConstructorWrapper;
 import com.byoutline.ibuscachedfield.events.ResponseEventWithArg;
+import com.byoutline.ottocachedfield.internal.ExceptionMsg;
 import com.byoutline.ottoeventcallback.OttoIBus;
 import com.squareup.otto.Bus;
 
@@ -35,6 +36,9 @@ public class OttoCachedEndpointWithArgBuilder<RETURN_TYPE, ARG_TYPE>
                                                                   Bus bus,
                                                                   ExecutorService valueGetterExecutor,
                                                                   Executor stateListenerExecutor) {
+            if(stateListenerExecutor == null || valueGetter == null) {
+                throw new IllegalArgumentException(ExceptionMsg.NULL_EXECUTOR);
+            }
             return new OttoCachedEndpointWithArg<RETURN_TYPE, ARG_TYPE>(sessionIdProvider, valueGetter,
                     resultEvent, new OttoIBus(bus),
                     valueGetterExecutor, stateListenerExecutor);
