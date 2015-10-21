@@ -24,7 +24,8 @@ To avoid passing same values to each of your CachedFields put following into you
 ```java
 OttoCachedField.init(sessionIdProvider, bus);
 ```
-where bus is ```Otto``` bus instance, and sessionIdProvider is a ```Provider``` of current session. ```Provider``` is 
+where bus is [Otto](https://github.com/square/otto) bus instance, and 
+[sessionIdProvider](https://github.com/byoutline/CachedField/tree/develop#session-id) is a ```Provider``` of current session. ```Provider``` is 
 supposed to return same string as long as same user is logged in. Typically it something like authorization header for your API calls.
 
 ##### Declare your fields #####
@@ -117,6 +118,14 @@ new OttoCachedFieldBuilder<>()
             return service.getValueFromApi();
         }
     }).withSuccessEvent(new ValueFetchedEvent())
+    .withResponseErrorEvent(new ValueFetchFailedEvent())
+    .build();
+```
+or if you are using [Retrolambda](https://github.com/orfjackal/retrolambda)
+```java
+new OttoCachedFieldBuilder<>()
+    .withValueProvider(service::getValueFromApi)
+    .withSuccessEvent(new ValueFetchedEvent())
     .withResponseErrorEvent(new ValueFetchFailedEvent())
     .build();
 ```
