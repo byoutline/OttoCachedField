@@ -9,3 +9,4 @@ compileJava {
     }
     options.bootClasspath = (new File(jdk6Home, "/jre/lib/rt.jar")).canonicalPath
 }
+
