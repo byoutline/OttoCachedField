@@ -16,7 +16,7 @@ compile 'com.byoutline.ottocachedfield:ottocachedfield:1.5.2'
 ```
 or if you want [Android Data Binding](https://developer.android.com/tools/data-binding/) support:
 ```groovy
-compile 'com.byoutline.ottocachedfield:observablecachedfield:1.0.0-SNAPSHOT'
+compile 'com.byoutline.ottocachedfield:observablecachedfield:1.0.0'
 ```
 
 ##### Init common settings #####
