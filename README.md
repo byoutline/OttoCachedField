@@ -12,11 +12,11 @@ How to use
 ##### Including dependency #####
 Add to your ```build.gradle```:
 ```groovy
-compile 'com.byoutline.ottocachedfield:ottocachedfield:1.5.1'
+compile 'com.byoutline.ottocachedfield:ottocachedfield:1.5.2'
 ```
 or if you want [Android Data Binding](https://developer.android.com/tools/data-binding/) support:
 ```groovy
-compile 'com.byoutline.ottocachedfield:ottocachedfield:1.6.0-beta3'
+compile 'com.byoutline.ottocachedfield:observablecachedfield:1.0.0-SNAPSHOT'
 ```
 
 ##### Init common settings #####
