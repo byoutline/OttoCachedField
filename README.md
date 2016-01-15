@@ -141,7 +141,7 @@ Not an Otto bus user?
 If you do not want to use Otto bus check [CachedField](https://github.com/byoutline/CachedField) project.
 
 #### Latest changes ####
-* 1.6.0-beta* Added ObservableCachedField which allows to use CachedField as data source for [Android Data Binding](https://developer.android.com/tools/data-binding/)
+* 1.5.2 No new features, new module with OttoObservableCachedField added with separate numeration.
 * 1.5.1 OttoCachedEndpointWithArg constructor is now protected instead of package private, so users can extend this class to hide long generic types.
 * 1.5.0 Added OttoCachedEndpoint to allow using CachedField like API for non GET calls ([read more](https://github.com/byoutline/CachedField#cachedendpoint))
 * 1.4.0 
