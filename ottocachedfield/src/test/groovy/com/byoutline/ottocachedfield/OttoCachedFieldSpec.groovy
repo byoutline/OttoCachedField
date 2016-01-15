@@ -57,7 +57,7 @@ class OttoCachedFieldSpec extends spock.lang.Specification {
         when:
         boolean tookToLong = false
         Thread.start {
-            sleep 15
+            sleep 45
             tookToLong = true;
         }
         field.postValue()
