@@ -1,0 +1,30 @@
+apply plugin: 'java'
+apply plugin: 'propdeps'
+
+apply from: '../gradle/byoutline/javaLib.gradle'
+
+repositories {
+//    mavenCentral()
+    maven { url "https://jcenter.bintray.com/" }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.byoutline.ottoeventcallback:ottoeventcallback-api:1.0.1'
+    compile 'javax.inject:javax.inject:1'
+    compile 'com.google.code.findbugs:jsr305:3.0.0'
+    compile 'com.squareup:otto:1.3.5'
+    compile 'com.byoutline.ibuscachedfield:ibuscachedfield:1.0.5'
+    testCompile 'com.google.guava:guava:18.0'
+}
+
+// Ignore coverage of google classes.
+jacocoTestReport {
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: 'com/byoutline/shadow/**')
+        })
+    }
+}
+
+apply from: '../maven-push.gradle'

@@ -1,4 +1,4 @@
-def scriptPath = 'gradle/byoutline/'
+def scriptPath = '../gradle/byoutline/'
 //apply from: scriptPath + 'forceJava6.gradle'
 apply from: scriptPath + 'forceJava7.gradle'
 apply from: scriptPath + 'codeCoverage.gradle'
