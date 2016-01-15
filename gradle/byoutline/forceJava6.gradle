@@ -1,7 +1,7 @@
 compileJava {
     sourceCompatibility = 1.6
     targetCompatibility = 1.6
-    
+
     def jdk6Home = System.getenv()['JAVA6_HOME']
     if (jdk6Home == null) {
         logger.warn("JAVA6_HOME enviromental variable not found. " +
@@ -9,3 +9,4 @@ compileJava {
     }
     options.bootClasspath = (new File(jdk6Home, "/jre/lib/rt.jar")).canonicalPath
 }
+
