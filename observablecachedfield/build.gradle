@@ -19,6 +19,15 @@ dependencies {
     testCompile 'com.google.guava:guava:18.0'
 }
 
+// Ignore coverage of google classes.
+jacocoTestReport {
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: 'com/byoutline/shadow/**')
+        })
+    }
+}
+
 apply from: '../maven-push.gradle'
 configurations.all {
     // check for updates every build
