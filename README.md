@@ -134,7 +134,7 @@ Builder syntax is slightly longer, but makes it obvious which argument does what
 Example Project
 ---------------
 If you want to see complete project that uses OttoCachedField take a look at [KickMaterial](https://github.com/byoutline/kickmaterial) 
-or smaller but slightly older [Android Live Code Warsaw Flickr project on Github](https://github.com/byoutline/AndroidLiveCodeWarsawFlickr/).
+or smaller but slightly older [Android Live Code Warsaw Flickr](https://github.com/byoutline/AndroidLiveCodeWarsawFlickr/)  project on Github.
 
 Not an Otto bus user?
 ---------------------
