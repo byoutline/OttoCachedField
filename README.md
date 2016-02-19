@@ -12,7 +12,7 @@ How to use
 ##### Including dependency #####
 Add to your ```build.gradle```:
 ```groovy
-compile 'com.byoutline.ottocachedfield:ottocachedfield:1.5.2'
+compile 'com.byoutline.ottocachedfield:ottocachedfield:1.6.0'
 ```
 or if you want [Android Data Binding](https://developer.android.com/tools/data-binding/) support:
 ```groovy
@@ -141,6 +141,7 @@ Not an Otto bus user?
 If you do not want to use Otto bus check [CachedField](https://github.com/byoutline/CachedField) project.
 
 #### Latest changes ####
+* 1.6.0 MainThreadExecutor class added for convenience of Android projects.
 * 1.5.2 No new features, new module with OttoObservableCachedField added with separate numeration.
 * 1.5.1 OttoCachedEndpointWithArg constructor is now protected instead of package private, so users can extend this class to hide long generic types.
 * 1.5.0 Added OttoCachedEndpoint to allow using CachedField like API for non GET calls ([read more](https://github.com/byoutline/CachedField#cachedendpoint))

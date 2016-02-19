@@ -6,6 +6,10 @@ import android.os.Looper;
 import javax.annotation.Nonnull;
 import java.util.concurrent.Executor;
 
+/**
+ * Executor that invokes commands on {@link Looper#getMainLooper()}.<br/>
+ * It can be useful if for example you update UI from {@link com.byoutline.cachedfield.FieldStateListener}.<br/>
+ */
 public class MainThreadExecutor implements Executor {
 
     @Override
