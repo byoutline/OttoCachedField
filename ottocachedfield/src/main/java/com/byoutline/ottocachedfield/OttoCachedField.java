@@ -59,17 +59,15 @@ public class OttoCachedField<RETURN_TYPE> extends CachedFieldImpl<RETURN_TYPE> {
                 valueGetter,
                 new IBusSuccessListener<RETURN_TYPE>(bus, successEvent),
                 new IBusErrorListener(bus, errorEvent),
-                bus,
                 valueGetterExecutor,
                 stateListenerExecutor);
     }
 
     private OttoCachedField(Provider<String> sessionProvider,
                             Provider<RETURN_TYPE> valueGetter,
-                            SuccessListener<RETURN_TYPE> successHandler, ErrorListener errorHandler, OttoIBus bus,
+                            SuccessListener<RETURN_TYPE> successHandler, ErrorListener errorHandler,
                             ExecutorService valueGetterExecutor, Executor stateListenerExecutor) {
         super(sessionProvider, valueGetter, successHandler, errorHandler, valueGetterExecutor, stateListenerExecutor);
-        bus.register(valueGetter);
     }
 
     public static <RETURN_TYPE> OttoCachedFieldBuilder<RETURN_TYPE> builder() {
