@@ -25,9 +25,18 @@ class OttoCachedFieldSpec extends spock.lang.Specification {
 
     static void postAndWaitUntilFieldStopsLoading(CachedField field) {
         boolean duringValueLoad = true
+        boolean loadingStarted = false
         def listener = { FieldState newState ->
-            if (newState == FieldState.NOT_LOADED || newState == FieldState.LOADED) {
-                duringValueLoad = false
+            switch(newState) {
+                case FieldState.NOT_LOADED:
+                    if (loadingStarted) duringValueLoad = false
+                    break
+                case FieldState.CURRENTLY_LOADING:
+                    loadingStarted = true
+                    break
+                case FieldState.LOADED:
+                    duringValueLoad = false
+                    break
             }
         } as FieldStateListener
 
@@ -70,12 +79,13 @@ class OttoCachedFieldSpec extends spock.lang.Specification {
 
     @Unroll
     def "should post success times: #sC, error times: #eC for valueProvider: #valProv"() {
-        when:
-        OttoCachedField field = OttoCachedField.builder()
+        given:
+        CachedField field = OttoCachedField.builder()
                 .withValueProvider(valProv)
                 .withSuccessEvent(successEvent)
                 .withResponseErrorEvent(errorEvent)
                 .build();
+        when:
         postAndWaitUntilFieldStopsLoading(field)
 
         then:
@@ -91,7 +101,7 @@ class OttoCachedFieldSpec extends spock.lang.Specification {
     def "postValue should post generic error"() {
         given:
         Object expEvent = "exp"
-        OttoCachedField field = OttoCachedField.builder()
+        CachedField field = OttoCachedField.builder()
                 .withValueProvider(MockFactory.getFailingStringGetter(exception))
                 .withSuccessEvent(successEvent)
                 .withGenericErrorEvent(expEvent)
@@ -141,7 +151,7 @@ class OttoCachedFieldSpec extends spock.lang.Specification {
         given:
         def sessionProv = { return "custom" } as Provider<String>
         Bus customBus = Mock()
-        OttoCachedField field = OttoCachedField.builder()
+        CachedField field = OttoCachedField.builder()
                 .withValueProvider(MockFactory.getStringGetter("val"))
                 .withSuccessEvent(successEvent)
                 .withResponseErrorEvent(errorEvent)

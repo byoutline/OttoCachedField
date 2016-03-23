@@ -26,9 +26,18 @@ class PostingToBusCachedFieldWithArgSpec extends spock.lang.Specification {
 
     static <ARG_TYPE> void postAndWaitUntilFieldStopsLoading(CachedFieldWithArg<?, ARG_TYPE> field, ARG_TYPE arg) {
         boolean duringValueLoad = true
+        boolean loadingStarted = false
         def listener = { FieldState newState ->
-            if (newState == FieldState.NOT_LOADED || newState == FieldState.LOADED) {
-                duringValueLoad = false
+            switch(newState) {
+                case FieldState.NOT_LOADED:
+                    if (loadingStarted) duringValueLoad = false
+                    break
+                case FieldState.CURRENTLY_LOADING:
+                    loadingStarted = true
+                    break
+                case FieldState.LOADED:
+                    duringValueLoad = false
+                    break
             }
         } as FieldStateListener
 
