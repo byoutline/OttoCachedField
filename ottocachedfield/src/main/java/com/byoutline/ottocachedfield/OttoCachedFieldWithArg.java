@@ -28,16 +28,15 @@ public class OttoCachedFieldWithArg<RETURN_TYPE, ARG_TYPE> extends CachedFieldWi
                 valueGetter,
                 new IBusSuccessListenerWithArg<RETURN_TYPE, ARG_TYPE>(bus, successEvent),
                 new IBusErrorListenerWithArg<ARG_TYPE>(bus, errorEvent),
-                bus, valueGetterExecutor, stateListenerExecutor);
+                valueGetterExecutor, stateListenerExecutor);
     }
 
     private OttoCachedFieldWithArg(Provider<String> sessionProvider,
                                    ProviderWithArg<RETURN_TYPE, ARG_TYPE> valueGetter,
                                    SuccessListenerWithArg<RETURN_TYPE, ARG_TYPE> successHandler,
-                                   ErrorListenerWithArg<ARG_TYPE> errorHandler, OttoIBus bus,
+                                   ErrorListenerWithArg<ARG_TYPE> errorHandler,
                                    ExecutorService valueGetterExecutor, Executor stateListenerExecutor) {
         super(sessionProvider, valueGetter, successHandler, errorHandler, valueGetterExecutor, stateListenerExecutor);
-        bus.register(valueGetter);
     }
 
     public static <RETURN_TYPE, ARG_TYPE> OttoCachedFieldWithArgBuilder<RETURN_TYPE, ARG_TYPE> builder() {
