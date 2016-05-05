@@ -1,13 +1,14 @@
 package com.byoutline.ottocachedfield
 
 import com.byoutline.ottocachedfield.events.ResponseEventWithArgImpl
+import spock.lang.Specification
 import spock.lang.Unroll
 
 /**
  *
  * @author Sebastian Kacprzak <sebastian.kacprzak at byoutline.com> on 27.06.14.
  */
-class ResponseEventWithArgImplSpec extends spock.lang.Specification {
+class ResponseEventWithArgImplSpec extends Specification {
 
     @Unroll
     def "should store passed response: #resp and argValue: #argVal"() {
@@ -28,5 +29,4 @@ class ResponseEventWithArgImplSpec extends spock.lang.Specification {
         2    | '1'
         'b'  | null
     }
-
 }

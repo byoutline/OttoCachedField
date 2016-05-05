@@ -7,6 +7,7 @@ import com.byoutline.ibuscachedfield.events.ResponseEventWithArgImpl
 import com.google.common.util.concurrent.MoreExecutors
 import com.squareup.otto.Bus
 import spock.lang.Shared
+import spock.lang.Specification
 
 import java.util.concurrent.Executor
 import java.util.concurrent.ExecutorService
@@ -16,7 +17,7 @@ import java.util.concurrent.FutureTask
  *
  * @author Sebastian Kacprzak <sebastian.kacprzak at byoutline.com> on 27.06.14.
  */
-class CustomExecutorsSpec extends spock.lang.Specification {
+class CustomExecutorsSpec extends Specification {
     @Shared
     String value = "value"
     @Shared

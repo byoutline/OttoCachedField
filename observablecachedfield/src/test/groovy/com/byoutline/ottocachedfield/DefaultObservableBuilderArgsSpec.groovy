@@ -2,13 +2,14 @@ package com.byoutline.ottocachedfield
 
 import com.byoutline.ibuscachedfield.internal.NullArgumentException
 import spock.lang.Shared
+import spock.lang.Specification
 import spock.lang.Unroll
 
 /**
  *
  * @author Sebastian Kacprzak <sebastian.kacprzak at byoutline.com> on 27.06.14.
  */
-class DefaultObservableBuilderArgsSpec extends spock.lang.Specification {
+class DefaultObservableBuilderArgsSpec extends Specification {
     @Shared
     Map<Integer, String> argToValueMap = [1: 'a', 2: 'b']
 

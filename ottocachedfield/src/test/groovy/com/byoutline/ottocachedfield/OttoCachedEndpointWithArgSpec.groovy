@@ -6,13 +6,14 @@ import com.byoutline.cachedfield.cachedendpoint.StateAndValue
 import com.google.common.util.concurrent.MoreExecutors
 import com.squareup.otto.Bus
 import spock.lang.Shared
+import spock.lang.Specification
 import spock.lang.Unroll
 
 /**
  *
  * @author Sebastian Kacprzak <sebastian.kacprzak at byoutline.com> on 27.06.14.
  */
-class OttoCachedEndpointWithArgSpec extends spock.lang.Specification {
+class OttoCachedEndpointWithArgSpec extends Specification {
     @Shared
     Map<Integer, String> argToValueMap = [1: 'a', 2: 'b']
     @Shared

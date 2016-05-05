@@ -7,6 +7,7 @@ import com.byoutline.cachedfield.dbcache.FetchType
 import com.byoutline.ibuscachedfield.events.ResponseEventWithArgImpl
 import com.squareup.otto.Bus
 import spock.lang.Shared
+import spock.lang.Specification
 
 import javax.inject.Provider
 
@@ -14,7 +15,7 @@ import javax.inject.Provider
  *
  * @author Sebastian Kacprzak <sebastian.kacprzak at byoutline.com> on 27.06.14.
  */
-class DbCacheSpec extends spock.lang.Specification {
+class DbCacheSpec extends Specification {
     @Shared
     String value = "value"
     @Shared

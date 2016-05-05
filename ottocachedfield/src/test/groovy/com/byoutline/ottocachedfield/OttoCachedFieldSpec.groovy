@@ -6,6 +6,7 @@ import com.byoutline.cachedfield.FieldStateListener
 import com.byoutline.eventcallback.ResponseEvent
 import com.squareup.otto.Bus
 import spock.lang.Shared
+import spock.lang.Specification
 import spock.lang.Unroll
 
 import javax.inject.Provider
@@ -14,7 +15,7 @@ import javax.inject.Provider
  *
  * @author Sebastian Kacprzak <sebastian.kacprzak at byoutline.com> on 27.06.14.
  */
-class OttoCachedFieldSpec extends spock.lang.Specification {
+class OttoCachedFieldSpec extends Specification {
     @Shared
     String value = "value"
     @Shared
@@ -46,6 +47,7 @@ class OttoCachedFieldSpec extends spock.lang.Specification {
             sleep 1
         }
         field.removeStateListener(listener)
+        sleep 4
     }
 
     def setup() {
