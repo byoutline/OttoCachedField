@@ -11,8 +11,8 @@ repositories {
 dependencies {
     compile 'javax.inject:javax.inject:1'
     compile 'com.google.code.findbugs:jsr305:3.0.0'
-    compile 'com.byoutline.observablecachedfield:observablecachedfield:1.1.0'
-    compile 'com.byoutline.ottocachedfield:ottocachedfield:1.5.2'
+    compile 'com.byoutline.observablecachedfield:observablecachedfield:1.1.1'
+    compile 'com.byoutline.ottocachedfield:ottocachedfield:1.6.3'
     provided 'com.android.databinding:baseLibrary:1.1'
     provided files('libs/binding-library-1.1.jar')
     testCompile files('libs/binding-library-1.1.jar')

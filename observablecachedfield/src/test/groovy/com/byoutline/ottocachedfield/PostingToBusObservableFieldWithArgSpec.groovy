@@ -6,6 +6,7 @@ import com.byoutline.cachedfield.FieldStateListener
 import com.byoutline.ottocachedfield.events.ResponseEventWithArg
 import com.squareup.otto.Bus
 import spock.lang.Shared
+import spock.lang.Specification
 import spock.lang.Unroll
 
 import javax.inject.Provider
@@ -16,7 +17,7 @@ import static com.byoutline.ottocachedfield.MockFactory.obsWithArgBuilder
  *
  * @author Sebastian Kacprzak <sebastian.kacprzak at byoutline.com> on 27.06.14.
  */
-class PostingToBusObservableFieldWithArgSpec extends spock.lang.Specification {
+class PostingToBusObservableFieldWithArgSpec extends Specification {
     @Shared
     Map<Integer, String> argToValueMap = [1: 'a', 2: 'b']
     @Shared
@@ -38,6 +39,7 @@ class PostingToBusObservableFieldWithArgSpec extends spock.lang.Specification {
             sleep 1
         }
         field.removeStateListener(listener)
+        sleep 4 // wait for event to be posted
     }
 
     def setup() {

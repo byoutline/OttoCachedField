@@ -6,13 +6,14 @@ import com.byoutline.ibuscachedfield.events.ResponseEventWithArg
 import com.byoutline.ibuscachedfield.events.ResponseEventWithArgImpl
 import com.byoutline.ibuscachedfield.internal.NullArgumentException
 import spock.lang.Shared
+import spock.lang.Specification
 import spock.lang.Unroll
 
 /**
  *
  * @author Sebastian Kacprzak <sebastian.kacprzak at byoutline.com> on 27.06.14.
  */
-class DefaultBuilderArgsSpec extends spock.lang.Specification {
+class DefaultBuilderArgsSpec extends Specification {
     @Shared
     String value = "value"
     @Shared
