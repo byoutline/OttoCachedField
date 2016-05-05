@@ -1,8 +1,8 @@
 package com.byoutline.ottocachedfield
 
 import android.databinding.Observable
+import android.databinding.ObservableField
 import com.byoutline.observablecachedfield.ObservableCachedFieldWithArg
-import com.byoutline.shadow.ObservableField
 import com.google.common.util.concurrent.MoreExecutors
 import com.squareup.otto.Bus
 import spock.lang.Shared
