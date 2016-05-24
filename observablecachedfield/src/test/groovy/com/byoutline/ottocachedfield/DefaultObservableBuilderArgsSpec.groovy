@@ -27,8 +27,11 @@ class DefaultObservableBuilderArgsSpec extends Specification {
 
         where:
         builder                  | name
-        MockFactory.obsWithArgBuilder()
-                .withValueProvider(MockFactory.getStringGetter(argToValueMap))
-                .withoutEvents() | "ObservableCachedFieldWithArg"
+        new CachedFieldBuilder()
+                .withValueProviderWithArg(MockFactory.getStringGetter(argToValueMap))
+                .asObservable()  | "ObservableCachedFieldWithArg"
+        new CachedFieldBuilder()
+                .withValueProvider(MockFactory.getStringGetter("str"))
+                .asObservable()  | "ObservableCachedField(no arg)"
     }
 }

@@ -11,7 +11,8 @@ import spock.lang.Unroll
 
 import javax.inject.Provider
 
-import static com.byoutline.ottocachedfield.MockFactory.obsWithArgBuilder
+import static com.byoutline.ottocachedfield.MockFactory.failingStringGetterWithArg
+import static com.byoutline.ottocachedfield.MockFactory.getStringGetter
 
 /**
  *
@@ -53,10 +54,11 @@ class PostingToBusObservableFieldWithArgSpec extends Specification {
     @Unroll
     def "should post value: #val #text, times: #sC for arg: #arg when created by: #builder.class.simpleName"() {
         given:
-        CachedFieldWithArg field = builder
-                .withValueProvider(MockFactory.getStringGetter(argToValueMap))
+        CachedFieldWithArg field = new CachedFieldBuilder()
+                .withValueProviderWithArg(getStringGetter(argToValueMap))
+                .asObservable()
                 .withSuccessEvent(successEvent)
-                .withResponseErrorEvent(errorEvent)
+                .withErrorEvent(errorEvent)
                 .build();
         when:
         postAndWaitUntilFieldStopsLoading(field, arg)
@@ -67,14 +69,14 @@ class PostingToBusObservableFieldWithArgSpec extends Specification {
         0 * errorEvent.setResponse(_, _)
 
         where:
-        val  | arg | builder              || sC
-        null | 0   | obsWithArgBuilder()  || 1
-        'a'  | 1   | obsWithArgBuilder()  || 1
-        'b'  | 2   | obsWithArgBuilder()  || 1
+        val  | arg || sC
+        null | 0   || 1
+        'a'  | 1   || 1
+        'b'  | 2   || 1
     }
 
     @Unroll
-    def "postValue should post error with argument when created by: #builder.class.simpleName"() {
+    def "postValue should post error with argument when created by: #name"() {
         given:
         Exception errorVal = null;
         Integer errorArg = null;
@@ -83,9 +85,8 @@ class PostingToBusObservableFieldWithArgSpec extends Specification {
                     errorVal = val; errorArg = arg
                 } as ResponseEventWithArg<Exception, Integer>
         CachedFieldWithArg field = builder
-                .withValueProvider(MockFactory.getFailingStringGetterWithArg())
                 .withSuccessEvent(successEvent)
-                .withResponseErrorEvent(errorEvent)
+                .withErrorEvent(errorEvent)
                 .build();
         when:
         postAndWaitUntilFieldStopsLoading(field, 2)
@@ -95,20 +96,21 @@ class PostingToBusObservableFieldWithArgSpec extends Specification {
         errorArg == 2
 
         where:
-        builder << MockFactory.busCachedFieldsWithArgBuilders()
+        name            | builder
+        "otto"          | new CachedFieldBuilder().withValueProviderWithArg(getFailingStringGetterWithArg())
+        "observable"    | new CachedFieldBuilder().withValueProviderWithArg(getFailingStringGetterWithArg()).asObservable()
     }
 
     @Unroll
-    def "custom bus passed to builder should be used instead of default when created by: #builder.class.simpleName"() {
+    def "custom bus passed to builder should be used instead of default when created by: #name"() {
         given:
         def sessionProv = { return "custom" } as Provider<String>
         Bus customBus = Mock()
         CachedFieldWithArg field = builder
-                .withValueProvider(MockFactory.getStringGetter(argToValueMap))
                 .withSuccessEvent(successEvent)
-                .withResponseErrorEvent(errorEvent)
-                .withCustomSessionIdProvider(sessionProv)
+                .withErrorEvent(errorEvent)
                 .withCustomBus(customBus)
+                .withCustomSessionIdProvider(sessionProv)
                 .build();
 
         when:
@@ -119,6 +121,8 @@ class PostingToBusObservableFieldWithArgSpec extends Specification {
         0 * bus.post(_)
 
         where:
-        builder << MockFactory.busCachedFieldsWithArgBuilders()
+        name            | builder
+        "otto"          | new CachedFieldBuilder().withValueProviderWithArg(getStringGetter(argToValueMap))
+        "observable"    | new CachedFieldBuilder().withValueProviderWithArg(getStringGetter(argToValueMap)).asObservable()
     }
 }
