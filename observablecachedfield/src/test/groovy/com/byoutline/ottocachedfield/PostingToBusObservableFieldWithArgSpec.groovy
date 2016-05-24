@@ -40,7 +40,7 @@ class PostingToBusObservableFieldWithArgSpec extends Specification {
             sleep 1
         }
         field.removeStateListener(listener)
-        sleep 4 // wait for event to be posted
+        sleep 8 // wait for event to be posted
     }
 
     def setup() {
