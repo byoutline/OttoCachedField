@@ -6,12 +6,13 @@ import com.byoutline.observablecachedfield.ObservableCachedFieldWithArg
 import com.google.common.util.concurrent.MoreExecutors
 import com.squareup.otto.Bus
 import spock.lang.Shared
+import spock.lang.Specification
 import spock.lang.Unroll
 
 /**
  * @author Sebastian Kacprzak <sebastian.kacprzak at byoutline.com>
  */
-public class ObservableCachedFieldWithArgSpec extends spock.lang.Specification {
+public class ObservableCachedFieldWithArgSpec extends Specification {
     @Shared
     Map<Integer, String> argToValueMap = [1: 'a', 2: 'b']
 
@@ -23,9 +24,9 @@ public class ObservableCachedFieldWithArgSpec extends spock.lang.Specification {
     @Unroll
     def "should notify about new value: #val for arg: #arg"() {
         given:
-        ObservableCachedFieldWithArg field = MockFactory.obsWithArgBuilder()
-                .withValueProvider(MockFactory.getStringGetter(argToValueMap))
-                .withoutEvents()
+        ObservableCachedFieldWithArg field = new CachedFieldBuilder()
+                .withValueProviderWithArg(MockFactory.getStringGetter(argToValueMap))
+                .asObservable()
                 .withCustomValueGetterExecutor(MoreExecutors.newDirectExecutorService())
                 .build();
         boolean called = false
