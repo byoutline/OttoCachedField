@@ -1,4 +1,0 @@
-rootProject.name = 'OttoCachedField'
-include 'observablecachedfield'
-include 'ottocachedfield'
-
